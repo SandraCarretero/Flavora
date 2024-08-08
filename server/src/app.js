@@ -2,7 +2,6 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const mongoose = require('mongoose');
-const todosRoutes = require('./routes/todos.routes');
 
 require('dotenv').config();
 
@@ -20,7 +19,7 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 // Uso de rutas
-app.use('/api/todos', todosRoutes);
+
 
 const startSever = async () => {
   try {
