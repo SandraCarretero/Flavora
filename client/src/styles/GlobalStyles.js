@@ -13,7 +13,6 @@ const GlobalStyles = createGlobalStyle`
   body{
     margin: 0;
     font-family: "Poppins", sans-serif;
-    padding: 1.25rem;
   }
   a{
     text-decoration: none;

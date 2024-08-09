@@ -1,8 +1,14 @@
 import styled from 'styled-components';
 
 const StyledHeader = styled.header`
+	position: fixed;
+	width: 100%;
+	height: 4.6875rem;
+	background: white;
 	display: flex;
 	justify-content: space-between;
+	padding: 1.25rem;
+	z-index: 1;
 `;
 
 const StyledList = styled.ul`
@@ -33,10 +39,20 @@ const StyledButtonBorder = styled(StyledButton)`
 	color: #39db4a;
 `;
 
+const StyledButtonSmall = styled(StyledButton)`
+	width: 3.75rem;
+`;
+
+const StyledProfileImage = styled.img`
+	height: 1.25rem;
+`;
+
 export {
 	StyledHeader,
 	StyledList,
 	StyledContainer,
 	StyledButtonBorder,
-	StyledButton
+	StyledButton,
+	StyledButtonSmall,
+	StyledProfileImage
 };

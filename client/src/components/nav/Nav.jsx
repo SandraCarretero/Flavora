@@ -1,16 +1,26 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import {
 	StyledButtonBorder,
 	StyledButton,
 	StyledContainer,
 	StyledHeader,
-	StyledList
+	StyledList,
+	StyledProfileImage,
+	StyledButtonSmall
 } from './nav.styles';
+import { useContext } from 'react';
+import { AuthContext } from '../../context/Auth.context';
 
 const Nav = () => {
+	const { userLogged } = useContext(AuthContext);
+	const location = useLocation();
+	const isLoginPage = location.pathname === '/login';
+	const isRegisterPage = location.pathname === '/register';
 	return (
 		<StyledHeader>
-			<span>Flavora</span>
+			<span>
+				<Link to='/'>Flavora</Link>
+			</span>
 			<nav>
 				<StyledList>
 					<li>
@@ -25,8 +35,23 @@ const Nav = () => {
 				</StyledList>
 			</nav>
 			<StyledContainer>
-				<StyledButtonBorder>Sign Up</StyledButtonBorder>
-				<StyledButton>Sign In</StyledButton>
+				{!userLogged && !isRegisterPage && (
+					<StyledButtonBorder>
+						<Link to='/register'>Sign Up</Link>
+					</StyledButtonBorder>
+				)}
+				{!userLogged && !isLoginPage && (
+					<StyledButton>
+						<Link to='/login'>Sign In</Link>
+					</StyledButton>
+				)}
+				{userLogged && (
+					<StyledButtonSmall>
+						<Link to='/profile'>
+							<StyledProfileImage src='/images/perfil.svg' alt='' />
+						</Link>
+					</StyledButtonSmall>
+				)}
 			</StyledContainer>
 		</StyledHeader>
 	);

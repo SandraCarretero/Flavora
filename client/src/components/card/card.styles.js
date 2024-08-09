@@ -31,6 +31,7 @@ const StyledCard = styled.div`
 		height: 1.25rem;
 		top: 0.625rem;
 		right: 0.625rem;
+		cursor: pointer;
 	}
 `;
 
