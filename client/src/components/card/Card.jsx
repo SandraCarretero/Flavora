@@ -1,8 +1,10 @@
+// components/Card/Card.jsx
+
 import {
 	StyledFilter,
 	StyledCard,
 	StyledCategory,
-	StyledImage,
+	// StyledImage,
 	StyledText,
 	StyledComponentDetails,
 	StyledDetails,
@@ -11,26 +13,38 @@ import {
 	StyledSpecials
 } from './card.styles';
 
-const Card = () => {
+const Card = ({ recipe }) => {
+	console.log('Rendering recipe:', recipe);
+	// Si `recipe` no está definido, muestra un mensaje alternativo
+	if (!recipe) {
+		return <div>Recipe data not available</div>;
+	}
+
+	// Asegúrate de que `recipe.specialties` sea un array antes de llamar a `map`
+	const specialties = Array.isArray(recipe.specialties) ? recipe.specialties : [];
+
 	return (
 		<StyledCard>
-			<StyledImage src='/images/ensalada.jpg' alt='' />
+			{/* <StyledImage src={recipe.image || '/images/placeholder.jpg'} alt='' /> */}
 			<StyledText>
-				<StyledCategory>Ensalada de Macarrones</StyledCategory>
-				<StyledFilter>Entrantes | Ensaladas</StyledFilter>
+				<StyledCategory>{recipe.name || 'No name'}</StyledCategory>
+				<StyledFilter>
+					{recipe.course || 'No course'} | {specialties.join(', ') || 'No specialties'}
+				</StyledFilter>
 			</StyledText>
 			<StyledContainerSpecials>
-				<StyledSpecials>Vegano</StyledSpecials>
-				<StyledSpecials>Vegano</StyledSpecials>
+				{specialties.map((specialty, index) => (
+					<StyledSpecials key={index}>{specialty}</StyledSpecials>
+				))}
 			</StyledContainerSpecials>
 			<StyledComponentDetails>
 				<StyledDetails>
 					<StyledDetailsImg src='/images/reloj.svg' alt='' />
-					<span>20 min</span>
+					<span>{recipe.time || 'No time'}</span>
 				</StyledDetails>
 				<StyledDetails>
 					<StyledDetailsImg src='/images/dificultad.svg' alt='' />
-					<span>Fácil</span>
+					<span>{recipe.difficulty || 'No difficulty'}</span>
 				</StyledDetails>
 			</StyledComponentDetails>
 		</StyledCard>

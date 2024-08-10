@@ -36,21 +36,21 @@ const Nav = () => {
 			</nav>
 			<StyledContainer>
 				{!userLogged && !isRegisterPage && (
-					<StyledButtonBorder>
-						<Link to='/register'>Sign Up</Link>
-					</StyledButtonBorder>
+					<Link to='/register'>
+						<StyledButtonBorder>Sign Up</StyledButtonBorder>
+					</Link>
 				)}
 				{!userLogged && !isLoginPage && (
-					<StyledButton>
-						<Link to='/login'>Sign In</Link>
-					</StyledButton>
+					<Link to='/login'>
+						<StyledButton>Sign In</StyledButton>
+					</Link>
 				)}
 				{userLogged && (
-					<StyledButtonSmall>
-						<Link to='/profile'>
+					<Link to='/profile'>
+						<StyledButtonSmall>
 							<StyledProfileImage src='/images/perfil.svg' alt='' />
-						</Link>
-					</StyledButtonSmall>
+						</StyledButtonSmall>
+					</Link>
 				)}
 			</StyledContainer>
 		</StyledHeader>

@@ -2,12 +2,11 @@ const express = require('express');
 const app = express();
 const cors = require('cors');
 const mongoose = require('mongoose');
-
 require('dotenv').config();
 
-// Rutas
+// Importar rutas
+const recipesRoutes = require('./routes/recipe.routes');
 
-// Middlewares para cliente
 // Opciones avanzadas de configuración de CORS
 const corsOptions = {
   origin: 'http://localhost:5173', // Dominios autorizados
@@ -16,21 +15,25 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.use(express.json());
+app.use(express.json()); // Middleware para parsear JSON
 
 // Uso de rutas
+app.use('/api/recipes', recipesRoutes);
 
-
-const startSever = async () => {
+const startServer = async () => {
   try {
-    await mongoose.connect(process.env.MONGODB_URL);
+    await mongoose.connect(process.env.MONGODB_URL, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    });
     console.log('Connected to database');
   } catch (err) {
-    console.log('Connecting error');
+    console.log('Connection error:', err);
   }
+
   app.listen(process.env.PORT, () =>
     console.log(`Servidor en ejecución en el puerto ${process.env.PORT}`)
   );
 };
 
-startSever();
+startServer();
