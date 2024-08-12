@@ -3,8 +3,13 @@ import { METHODS } from '../constants/methods';
 import { fetchData } from './fetchData';
 
 export const getData = async url => {
-	const data = await fetchData(url, { method: METHODS.GET });
-	return data;
+	try {
+		const data = await fetchData(url, { method: METHODS.GET });
+		return data;
+	} catch (error) {
+		console.error('Error in getData:', error);
+		throw error; // Re-lanza el error para que el componente pueda manejarlo
+	}
 };
 
 export const postData = async (url, body) => {

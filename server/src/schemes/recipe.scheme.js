@@ -10,7 +10,8 @@ const recipeSchema = new mongoose.Schema({
   steps: { type: String, required: true },
   rating: { type: Number, default: 0 },
   ratingsCount: { type: Number, default: 0 },
-  totalRating: { type: Number, default: 0 }
+  totalRating: { type: Number, default: 0 },
+  userId: { type: String, required: true },
 });
 
 recipeSchema.methods.updateRating = function (newRating) {

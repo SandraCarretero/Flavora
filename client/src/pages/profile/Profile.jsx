@@ -13,13 +13,20 @@ const Profile = () => {
 
 	useEffect(() => {
 		if (userLogged) {
-			console.log('Fetching recipes for user:', userLogged.uid); // Verifica el ID del usuario
-			getData(`/api/recipes/user?userId=${userLogged.uid}`)
-				.then(data => {
-					console.log('Recipes data:', data); // Verifica los datos recibidos
-					setRecipes(data);
-				})
-				.catch(error => console.error('Error fetching recipes:', error));
+			const fetchRecipes = async () => {
+				try {
+					console.log('Fetching recipes for user:', userLogged.uid);
+					const response = await getData(
+						`/api/recipes/user?userId=${userLogged.uid}`
+					);
+					console.log('Recipes data:', response);
+					setRecipes(response);
+				} catch (error) {
+					console.error('Error fetching recipes:', error);
+				}
+			};
+
+			fetchRecipes();
 		}
 	}, [userLogged]);
 

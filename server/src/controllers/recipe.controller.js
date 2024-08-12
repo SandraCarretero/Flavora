@@ -6,26 +6,51 @@ const recipesController = {};
 
 // Obtener todas las recetas
 recipesController.getRecipes = async (req, res) => {
+  const { userId } = req.query;
+
   try {
-    const recipes = await Recipe.find();
-    res.status(200).json(recipes);
+    // Buscar recetas por userId
+    const recipes = await Recipe.find({ userId });
+    res.json(recipes);
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: 'Error al obtener las recetas', error: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 
 // Crear una nueva receta
 recipesController.createRecipes = async (req, res) => {
+  const {
+    name,
+    difficulty,
+    time,
+    specialties,
+    course,
+    mealType,
+    steps,
+    userId
+  } = req.body;
+
   try {
-    const recipe = new Recipe(req.body);
-    await recipe.save();
-    res.status(201).json(recipe);
+    // Crea un nuevo documento de receta en MongoDB
+    const newRecipe = new Recipe({
+      name,
+      difficulty,
+      time,
+      specialties,
+      course,
+      mealType,
+      steps,
+      userId // Guarda el ID del usuario en la receta
+    });
+
+    // Guarda la receta en la base de datos
+    const savedRecipe = await newRecipe.save();
+
+    // Devuelve la receta guardada como respuesta
+    res.status(201).json(savedRecipe);
   } catch (error) {
-    res
-      .status(400)
-      .json({ message: 'Error al crear la receta', error: error.message });
+    console.error('Error al guardar la receta:', error);
+    res.status(500).json({ message: 'Error al guardar la receta' });
   }
 };
 
