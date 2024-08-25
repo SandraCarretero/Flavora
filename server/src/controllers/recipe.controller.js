@@ -11,7 +11,7 @@ recipesController.getRecipes = async (req, res) => {
   try {
     // Buscar recetas por userId
     const recipes = await Recipe.find({ userId });
-    res.json(recipes);
+    res.json(recipes); // Asegúrate de que se envíe JSON
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -91,17 +91,16 @@ recipesController.deleteRecipes = async (req, res) => {
   }
 };
 
-// recipe.controller.js
+// Obtener recetas por usuario
 recipesController.getRecipesByUser = async (req, res) => {
   const { userId } = req.query;
 
   try {
-    const recipes = await Recipe.find({ userId }); // Filtra recetas por userId
-    res.status(200).json(recipes);
+    // Buscar recetas por userId
+    const recipes = await Recipe.find({ userId });
+    res.json(recipes); // Asegúrate de que se envíe JSON
   } catch (error) {
-    res
-      .status(500)
-      .json({ message: 'Error al obtener las recetas', error: error.message });
+    res.status(500).json({ message: error.message });
   }
 };
 

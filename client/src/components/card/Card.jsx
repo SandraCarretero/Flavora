@@ -1,39 +1,33 @@
-// components/Card/Card.jsx
-
 import {
-	StyledFilter,
 	StyledCard,
 	StyledCategory,
-	// StyledImage,
+	StyledFilter,
 	StyledText,
 	StyledComponentDetails,
 	StyledDetails,
 	StyledDetailsImg,
 	StyledContainerSpecials,
-	StyledSpecials
+	StyledSpecials,
+	StyledImage
 } from './card.styles';
 
 const Card = ({ recipe }) => {
-	console.log('Rendering recipe:', recipe);
-	// Si `recipe` no está definido, muestra un mensaje alternativo
 	if (!recipe) {
-		return <div>Recipe data not available</div>;
+		return <p>No recipe data available</p>;
 	}
-
-	// Asegúrate de que `recipe.specialties` sea un array antes de llamar a `map`
-	const specialties = Array.isArray(recipe.specialties) ? recipe.specialties : [];
 
 	return (
 		<StyledCard>
-			{/* <StyledImage src={recipe.image || '/images/placeholder.jpg'} alt='' /> */}
+			<StyledImage src='/images/ensalada.jpg' alt='' />
 			<StyledText>
 				<StyledCategory>{recipe.name || 'No name'}</StyledCategory>
 				<StyledFilter>
-					{recipe.course || 'No course'} | {specialties.join(', ') || 'No specialties'}
+					{recipe.course || 'No course'} |{' '}
+					{recipe.specialties.join(' | ') || 'No specialties'}
 				</StyledFilter>
 			</StyledText>
 			<StyledContainerSpecials>
-				{specialties.map((specialty, index) => (
+				{recipe.specialties.map((specialty, index) => (
 					<StyledSpecials key={index}>{specialty}</StyledSpecials>
 				))}
 			</StyledContainerSpecials>

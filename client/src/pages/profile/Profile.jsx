@@ -10,18 +10,29 @@ const Profile = () => {
 	const navigate = useNavigate();
 	const { userLogged } = useContext(AuthContext);
 	const [recipes, setRecipes] = useState([]);
+	const [error, setError] = useState(null);
 
 	useEffect(() => {
 		if (userLogged) {
 			const fetchRecipes = async () => {
 				try {
-					console.log('Fetching recipes for user:', userLogged.uid);
 					const response = await getData(
-						`/api/recipes/user?userId=${userLogged.uid}`
+						`http://localhost:3000/api/recipes?userId=${userLogged.uid}`
 					);
-					console.log('Recipes data:', response);
-					setRecipes(response);
+
+					if (response.error) {
+						setError(response.error);
+						console.error('Error fetching recipes:', response.error);
+					} else {
+						if (Array.isArray(response)) {
+							setRecipes(response);
+						} else {
+							setError('Unexpected response format');
+							console.error('Unexpected response format:', response);
+						}
+					}
 				} catch (error) {
+					setError(error.message);
 					console.error('Error fetching recipes:', error);
 				}
 			};
@@ -39,8 +50,16 @@ const Profile = () => {
 
 			<div>
 				<h2>My Recipes</h2>
-				{recipes.length > 0 ? (
-					recipes.map(recipe => <Card key={recipe._id} recipe={recipe} />)
+				{error ? (
+					<p>Error: {error}</p>
+				) : recipes.length > 0 ? (
+					recipes.map(recipe =>
+						recipe && recipe.name ? (
+							<Card key={recipe._id} recipe={recipe} />
+						) : (
+							<p key={recipe._id}>Recipe data is missing</p>
+						)
+					)
 				) : (
 					<p>No recipes found.</p>
 				)}
