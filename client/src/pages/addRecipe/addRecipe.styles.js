@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const StyledForm = styled.form`
-	/* Agrega tus estilos aquí */
+	padding-top: 4.6875rem;
 `;
 
 const StyledInput = styled.input`

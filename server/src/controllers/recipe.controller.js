@@ -104,4 +104,15 @@ recipesController.getRecipesByUser = async (req, res) => {
   }
 };
 
+recipesController.getRandomRecipes = async (req, res) => {
+  const limit = parseInt(req.query.limit) || 4; // Por defecto 4 recetas
+
+  try {
+    const recipes = await Recipe.aggregate([{ $sample: { size: limit } }]);
+    res.json(recipes);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
 module.exports = recipesController;

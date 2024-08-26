@@ -5,6 +5,7 @@ import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../context/Auth.context';
 import { getData } from '../../utils/api';
 import Card from '../../components/card/Card';
+import { StyledMyRecipes, StyledProfile } from './profile.styles';
 
 const Profile = () => {
 	const navigate = useNavigate();
@@ -42,7 +43,7 @@ const Profile = () => {
 	}, [userLogged]);
 
 	return (
-		<>
+		<StyledProfile>
 			<h1>PROFILE</h1>
 			{userLogged && <h3>User: {userLogged.email}</h3>}
 			<button onClick={() => handleLogout(navigate)}>Logout</button>
@@ -50,21 +51,23 @@ const Profile = () => {
 
 			<div>
 				<h2>My Recipes</h2>
-				{error ? (
-					<p>Error: {error}</p>
-				) : recipes.length > 0 ? (
-					recipes.map(recipe =>
-						recipe && recipe.name ? (
-							<Card key={recipe._id} recipe={recipe} />
-						) : (
-							<p key={recipe._id}>Recipe data is missing</p>
+				<StyledMyRecipes>
+					{error ? (
+						<p>Error: {error}</p>
+					) : recipes.length > 0 ? (
+						recipes.map(recipe =>
+							recipe && recipe.name ? (
+								<Card key={recipe._id} recipe={recipe} />
+							) : (
+								<p key={recipe._id}>Recipe data is missing</p>
+							)
 						)
-					)
-				) : (
-					<p>No recipes found.</p>
-				)}
+					) : (
+						<p>No recipes found.</p>
+					)}
+				</StyledMyRecipes>
 			</div>
-		</>
+		</StyledProfile>
 	);
 };
 

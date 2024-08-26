@@ -22,8 +22,7 @@ const Card = ({ recipe }) => {
 			<StyledText>
 				<StyledCategory>{recipe.name || 'No name'}</StyledCategory>
 				<StyledFilter>
-					{recipe.course || 'No course'} |{' '}
-					{recipe.specialties.join(' | ') || 'No specialties'}
+					{recipe.course || 'No course'} | {recipe.mealType || 'No specialties'}
 				</StyledFilter>
 			</StyledText>
 			<StyledContainerSpecials>

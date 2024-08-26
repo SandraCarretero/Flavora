@@ -9,4 +9,6 @@ recipesRoutes.delete('/:id', recipesController.deleteRecipes);
 
 recipesRoutes.get('/user', recipesController.getRecipesByUser);
 
+recipesRoutes.get('/random', recipesController.getRandomRecipes);
+
 module.exports = recipesRoutes;
