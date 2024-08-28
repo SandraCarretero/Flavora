@@ -5,7 +5,16 @@ import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../context/Auth.context';
 import { getData } from '../../utils/api';
 import Card from '../../components/card/Card';
-import { StyledMyRecipes, StyledProfile } from './profile.styles';
+import {
+	StyledButton,
+	StyledColorImg,
+	StyledColumn,
+	StyledHeader,
+	StyledLogout,
+	StyledMyRecipes,
+	StyledProfile,
+	StyledRow
+} from './profile.styles';
 
 const Profile = () => {
 	const navigate = useNavigate();
@@ -44,10 +53,30 @@ const Profile = () => {
 
 	return (
 		<StyledProfile>
-			<h1>PROFILE</h1>
-			{userLogged && <h3>User: {userLogged.email}</h3>}
-			<button onClick={() => handleLogout(navigate)}>Logout</button>
-			<Link to='/addRecipe'>Crear receta</Link>
+			<StyledHeader>
+				{userLogged && (
+					<StyledColorImg>
+						{userLogged.email.charAt(0).toUpperCase()}
+					</StyledColorImg>
+				)}
+				<StyledColumn>
+					<StyledRow>
+						{userLogged && <span>{userLogged.email}</span>}
+						<StyledButton>Edit Profile</StyledButton>
+						<StyledLogout
+							src='/images/logout.svg'
+							alt=''
+							onClick={() => handleLogout(navigate)}
+						/>
+					</StyledRow>
+					<StyledRow>
+						<span>{recipes.length} recetas</span>
+						<StyledButton>
+							<Link to='/addRecipe'>Crear receta</Link>
+						</StyledButton>
+					</StyledRow>
+				</StyledColumn>
+			</StyledHeader>
 
 			<div>
 				<h2>My Recipes</h2>

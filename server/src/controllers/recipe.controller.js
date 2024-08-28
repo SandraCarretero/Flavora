@@ -115,4 +115,19 @@ recipesController.getRandomRecipes = async (req, res) => {
   }
 };
 
+// Controlador para obtener una receta por ID
+recipesController.getRecipeById = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const recipe = await Recipe.findById(id);
+    if (!recipe) {
+      return res.status(404).json({ message: 'Receta no encontrada' });
+    }
+    res.status(200).json(recipe);
+  } catch (error) {
+    res.status(500).json({ message: 'Error al obtener la receta' });
+  }
+};
+
 module.exports = recipesController;

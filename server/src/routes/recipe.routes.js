@@ -11,4 +11,6 @@ recipesRoutes.get('/user', recipesController.getRecipesByUser);
 
 recipesRoutes.get('/random', recipesController.getRandomRecipes);
 
+recipesRoutes.get('/:id', recipesController.getRecipeById);
+
 module.exports = recipesRoutes;
