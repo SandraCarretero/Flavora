@@ -1,3 +1,4 @@
+import { v4 } from 'uuid';
 import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { postData } from '../../utils/api'; // Utilidad para hacer peticiones POST
@@ -8,8 +9,6 @@ import {
 	StyledFormGroup,
 	StyledFormTop,
 	StyledHr,
-	StyledImg,
-	StyledContent,
 	StyledIngredientsContainer,
 	StyledInput,
 	StyledLabel,
@@ -19,21 +18,48 @@ import {
 	StyledSection,
 	StyledSelect,
 	StyledStepsContainer,
-	StyledTextarea,
 	StyledTimeInputs
 } from './addRecipe.styles'; // Asegúrate de tener estos estilos
+import Ingredients from '../../components/ingredients/Ingredients';
+import Steps from '../../components/steps/Steps';
 
 const AddRecipe = () => {
 	const [name, setName] = useState('');
 	const [slice, setSlice] = useState('');
 	const [difficulty, setDifficulty] = useState('');
-	const [time, setTime] = useState('');
+	const [time, setTime] = useState({ hours: 0, minutes: 0 });
 	const [specialties, setSpecialties] = useState([]);
 	const [course, setCourse] = useState('');
 	const [mealType, setMealType] = useState('');
-	const [steps, setSteps] = useState('');
 	const navigate = useNavigate();
 	const { userLogged } = useContext(AuthContext);
+
+	const [ingredients, setIngredients] = useState([
+		{ id: v4(), amount: '', unit: '', ingredient: '' }
+	]);
+	const [steps, setSteps] = useState([{ id: v4(), text: '' }]);
+
+	const handleIngredientChange = (id, name, value) => {
+		setIngredients(
+			ingredients.map(ingredient =>
+				ingredient.id === id ? { ...ingredient, [name]: value } : ingredient
+			)
+		);
+	};
+
+	const handleStepChange = (id, value) => {
+		setSteps(
+			steps.map(step => (step.id === id ? { ...step, text: value } : step))
+		);
+	};
+
+	const handleTimeChange = (type, value) => {
+		const numericValue = parseInt(value, 10);
+		setTime(prevTime => ({
+			...prevTime,
+			[type]: isNaN(numericValue) ? 0 : numericValue
+		}));
+	};
 
 	return (
 		<StyledSection>
@@ -50,6 +76,7 @@ const AddRecipe = () => {
 							specialties,
 							course,
 							mealType,
+							ingredients,
 							steps
 						},
 						userLogged,
@@ -102,35 +129,35 @@ const AddRecipe = () => {
 							<StyledLabel htmlFor='time'>Time</StyledLabel>
 							<StyledTimeInputs>
 								<StyledSelect
-									value={time}
-									onChange={e => setTime(e.target.value)}
+									value={time.hours}
+									onChange={e => handleTimeChange('hours', e.target.value)}
 									required
 								>
-									<option value='0'>0h</option>
-									<option value='1'>1h</option>
-									<option value='2'>2h</option>
-									<option value='3'>3h</option>
-									<option value='4'>4h</option>
-									<option value='5'>5h</option>
-									<option value='6'>6h</option>
+									<option value='0'>0</option>
+									<option value='1'>1</option>
+									<option value='2'>2</option>
+									<option value='3'>3</option>
+									<option value='4'>4</option>
+									<option value='5'>5</option>
+									<option value='6'>6</option>
 								</StyledSelect>
 								<StyledSelect
-									value={time}
-									onChange={e => setTime(e.target.value)}
+									value={time.minutes}
+									onChange={e => handleTimeChange('minutes', e.target.value)}
 									required
 								>
-									<option value='0'>0'</option>
-									<option value='5'>5'</option>
-									<option value='10'>10'</option>
-									<option value='15'>15'</option>
-									<option value='20'>20'</option>
-									<option value='25'>25'</option>
-									<option value='30'>30'</option>
-									<option value='35'>35'</option>
-									<option value='40'>40'</option>
-									<option value='45'>45'</option>
-									<option value='50'>50'</option>
-									<option value='55'>55'</option>
+									<option value='0'>0</option>
+									<option value='5'>5</option>
+									<option value='10'>10</option>
+									<option value='15'>15</option>
+									<option value='20'>20</option>
+									<option value='25'>25</option>
+									<option value='30'>30</option>
+									<option value='35'>35</option>
+									<option value='40'>40</option>
+									<option value='45'>45</option>
+									<option value='50'>50</option>
+									<option value='55'>55</option>
 								</StyledSelect>
 							</StyledTimeInputs>
 						</StyledFormGroup>
@@ -143,6 +170,7 @@ const AddRecipe = () => {
 										[...e.target.selectedOptions].map(option => option.value)
 									)
 								}
+								multiple
 							>
 								<option value=''>Especiales</option>
 								<option value='Sin gluten'>Sin gluten</option>
@@ -175,7 +203,7 @@ const AddRecipe = () => {
 								<option value='Pescado'>Pescado</option>
 								<option value='Verdura'>Verdura</option>
 								<option value='Pasta'>Pasta</option>
-								<option value='Verdura'>Arroz</option>
+								<option value='Arroz'>Arroz</option>
 								<option value='Postre'>Postre</option>
 								<option value='Batido'>Batido</option>
 							</StyledSelect>
@@ -186,39 +214,67 @@ const AddRecipe = () => {
 				<StyledHr />
 				<h3>Ingredients</h3>
 				<StyledIngredientsContainer>
-					<StyledContent>
-						<StyledInput type='number' placeholder='Amount'></StyledInput>
-						<StyledSelect>
-							<option value=''>Unit of measurement</option>
-							<option value='Gusto'>Al gusto</option>
-							<option value='Kg'>Kilogramos</option>
-							<option value='Cucharada'>Cucharada</option>
-							<option value='Cucharadita'>Cucharadita</option>
-							<option value='Pizca'>Pizca</option>
-						</StyledSelect>
-						<StyledInput type='text' placeholder='Ingredient'></StyledInput>
-						<StyledImg src='/images/delete.svg' alt='' />
-						<StyledImg src='/images/add.svg' alt='' />
-					</StyledContent>
+					{ingredients.map((ingredient, index) => (
+						<Ingredients
+							key={ingredient.id}
+							ingredient={ingredient}
+							onChange={handleIngredientChange}
+							onAdd={() => addIngredient(setIngredients, ingredients)}
+							onDelete={
+								index === 0 && ingredients.length === 1
+									? null
+									: () =>
+											removeIngredient(
+												setIngredients,
+												ingredients,
+												ingredient.id
+											)
+							}
+							showAddButton={index === ingredients.length - 1}
+						/>
+					))}
 				</StyledIngredientsContainer>
 				<StyledHr />
 				<h3>Steps</h3>
 				<StyledStepsContainer>
-					<StyledContent>
-						<StyledTextarea
-							placeholder='Pasos a seguir'
-							value={steps}
-							onChange={e => setSteps(e.target.value)}
-							required
+					{steps.map((step, index) => (
+						<Steps
+							key={step.id}
+							step={step}
+							onChange={handleStepChange}
+							onAdd={() => addStep(setSteps, steps)}
+							onDelete={
+								index === 0 && steps.length === 1
+									? null
+									: () => removeStep(setSteps, steps, step.id)
+							}
+							showAddButton={index === steps.length - 1}
 						/>
-						<StyledImg src='/images/delete.svg' alt='' />
-						<StyledImg src='/images/add.svg' alt='' />
-					</StyledContent>
+					))}
 				</StyledStepsContainer>
 				<StyledButton type='submit'>Añadir Receta</StyledButton>
 			</form>
 		</StyledSection>
 	);
+};
+
+const addIngredient = (setIngredients, ingredients) => {
+	setIngredients([
+		...ingredients,
+		{ id: v4(), amount: '', unit: '', ingredient: '' }
+	]);
+};
+
+const removeIngredient = (setIngredients, ingredients, id) => {
+	setIngredients(ingredients.filter(ingredient => ingredient.id !== id));
+};
+
+const addStep = (setSteps, steps) => {
+	setSteps([...steps, { id: v4(), text: '' }]);
+};
+
+const removeStep = (setSteps, steps, id) => {
+	setSteps(steps.filter(step => step.id !== id));
 };
 
 const handleSubmit = async (event, recipeData, userLogged, navigate) => {
@@ -231,14 +287,23 @@ const handleSubmit = async (event, recipeData, userLogged, navigate) => {
 
 	const recipeWithUser = {
 		...recipeData,
+		time: {
+			hours: parseInt(recipeData.time.hours, 10),
+			minutes: parseInt(recipeData.time.minutes, 10)
+		},
 		userId: userLogged.uid
 	};
+
+	console.log('Datos de la receta a enviar:', recipeWithUser);
 
 	try {
 		await postData(URLS.API_RECIPES, recipeWithUser);
 		navigate('/profile');
 	} catch (error) {
-		console.error('Error al crear la receta:', error);
+		console.error(
+			'Error al crear la receta:',
+			error.response || error.message || error
+		);
 	}
 };
 

@@ -67,15 +67,6 @@ const StyledSelect = styled.select`
 	border-radius: 0.25rem;
 `;
 
-const StyledTextarea = styled.textarea`
-	width: calc(100% - 1.25rem);
-	padding: 0.625rem;
-	border: 0.0625rem solid #ccc;
-	border-radius: 0.25rem;
-	resize: none;
-	field-sizing: content;
-`;
-
 const StyledTimeInputs = styled.div`
 	width: calc(100% - 1.25rem);
 	display: flex;
@@ -93,17 +84,6 @@ const StyledIngredientsContainer = styled.div`
 	margin-bottom: 1.25rem;
 `;
 
-const StyledContent = styled.div`
-	display: flex;
-	align-items: center;
-	margin-bottom: 0.625rem;
-	gap: 0.625rem;
-`;
-
-const StyledImg = styled.img`
-	width: 1.875rem;
-	cursor: pointer;
-`;
 const StyledStepsContainer = styled.div`
 	margin-bottom: 1.25rem;
 `;
@@ -130,9 +110,6 @@ export {
 	StyledTimeInputs,
 	StyledHr,
 	StyledIngredientsContainer,
-	StyledContent,
-	StyledImg,
 	StyledStepsContainer,
-	StyledTextarea,
 	StyledButton
 };

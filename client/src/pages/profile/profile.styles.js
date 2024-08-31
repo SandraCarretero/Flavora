@@ -52,10 +52,10 @@ const StyledLogout = styled.img`
 `;
 
 const StyledMyRecipes = styled.div`
-	display: grid;
-	grid-template-columns: repeat(4, 1fr);
+	display: flex;
 	row-gap: 30px;
-	justify-items: center;
+	flex-wrap: wrap-reverse;
+	flex-direction: row-reverse;
 `;
 
 export {

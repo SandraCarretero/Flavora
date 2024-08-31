@@ -1,5 +1,9 @@
 import styled from 'styled-components';
 
+const StyledContainerCard = styled.div`
+	width: 25%;
+`;
+
 const StyledCard = styled.div`
 	position: relative;
 	background-color: white;
@@ -10,6 +14,7 @@ const StyledCard = styled.div`
 	overflow: hidden;
 	width: 12.5rem;
 	min-height: 15.75rem;
+	margin: 0 auto;
 	box-shadow: 0px 0px 8px 0px #e2e2e2;
 	border-radius: 1.25rem;
 	padding-bottom: 0.75rem;
@@ -94,6 +99,7 @@ const StyledDetailsImg = styled.img`
 `;
 
 export {
+	StyledContainerCard,
 	StyledCard,
 	StyledImage,
 	StyledText,

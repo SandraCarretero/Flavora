@@ -26,11 +26,15 @@ recipesController.createRecipes = async (req, res) => {
     specialties,
     course,
     mealType,
+    ingredients,
     steps,
     userId
   } = req.body;
 
   try {
+    if (!name || !difficulty || !course || !mealType || !userId) {
+      return res.status(400).json({ message: 'Faltan campos requeridos' });
+    }
     // Crea un nuevo documento de receta en MongoDB
     const newRecipe = new Recipe({
       name,
@@ -39,6 +43,7 @@ recipesController.createRecipes = async (req, res) => {
       specialties,
       course,
       mealType,
+      ingredients,
       steps,
       userId // Guarda el ID del usuario en la receta
     });
