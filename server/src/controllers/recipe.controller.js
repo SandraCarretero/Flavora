@@ -21,6 +21,7 @@ recipesController.getRecipes = async (req, res) => {
 recipesController.createRecipes = async (req, res) => {
   const {
     name,
+    slice,
     difficulty,
     time,
     specialties,
@@ -38,6 +39,7 @@ recipesController.createRecipes = async (req, res) => {
     // Crea un nuevo documento de receta en MongoDB
     const newRecipe = new Recipe({
       name,
+      slice,
       difficulty,
       time,
       specialties,
@@ -45,7 +47,7 @@ recipesController.createRecipes = async (req, res) => {
       mealType,
       ingredients,
       steps,
-      userId // Guarda el ID del usuario en la receta
+      userId
     });
 
     // Guarda la receta en la base de datos

@@ -1,7 +1,8 @@
 import {
 	createUserWithEmailAndPassword,
 	signInWithPopup,
-	GoogleAuthProvider
+	GoogleAuthProvider,
+	updateProfile
 } from 'firebase/auth';
 import { auth } from '../../config/firebase.config';
 import { Link, useNavigate } from 'react-router-dom';
@@ -25,6 +26,11 @@ const Register = () => {
 		<StyledContainerForm>
 			<StyledTitle>Sign Up</StyledTitle>
 			<StyledForm onSubmit={e => handleSubmit(e, navigate)}>
+				<StyledFormElement>
+					<StyledInput type='text' name='username' placeholder='' />
+					<StyledLabel htmlFor='username'>Username</StyledLabel>
+					<StyledUnderline />
+				</StyledFormElement>
 				<StyledFormElement>
 					<StyledInput type='text' name='email' placeholder='' />
 					<StyledLabel htmlFor='email'>Email</StyledLabel>
@@ -51,9 +57,9 @@ const Register = () => {
 
 const handleSubmit = async (event, navigate) => {
 	event.preventDefault();
-	const { email, password } = event.target;
+	const { email, password, username } = event.target;
 	try {
-		await createUserWithEmailAndPassword(auth, email.value, password.value);
+		await registerUser(email.value, password.value, username.value);
 	} catch (err) {
 		console.log(err);
 	}
@@ -71,6 +77,27 @@ const registerWithGoogle = async navigate => {
 		navigate('/');
 	} catch (err) {
 		console.log(err);
+	}
+};
+
+const registerUser = async (email, password, username) => {
+	try {
+		const userCredential = await createUserWithEmailAndPassword(
+			auth,
+			email,
+			password
+		);
+		const user = userCredential.user;
+
+		// Actualizar el perfil del usuario con el username
+		await updateProfile(user, {
+			displayName: username
+		});
+
+		// Aquí puedes agregar cualquier otra lógica que necesites después del registro
+	} catch (error) {
+		console.error('Error during registration:', error);
+		throw new Error(error.message);
 	}
 };
 

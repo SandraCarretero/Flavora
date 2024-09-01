@@ -1,6 +1,18 @@
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { getData } from '../../utils/api';
+import {
+	StyledDetails,
+	StyledDetailsImg,
+	StyledHr,
+	StyledList,
+	StyledPhotoBox,
+	StyledPhotoUpload,
+	StyledRecipeDetails,
+	StyledSection,
+	StyledSpecials,
+	StyledTop
+} from './recipeDetail.styles';
 
 const RecipeDetail = () => {
 	const { id } = useParams(); // Obtener el ID de la receta desde la URL
@@ -32,59 +44,68 @@ const RecipeDetail = () => {
 	if (!recipe) return <p>Loading...</p>;
 
 	return (
-		<div>
-			<h1>{recipe.name}</h1>
-			<p>
-				<strong>Difficulty:</strong> {recipe.difficulty}
-			</p>
-			<p>
-				<strong>Time:</strong> {recipe.time.hours}h {recipe.time.minutes}m
-			</p>
-			<p>
-				<strong>Specialties:</strong> {recipe.specialties.join(', ')}
-			</p>
-			<p>
-				<strong>Course:</strong> {recipe.course}
-			</p>
-			<p>
-				<strong>Meal Type:</strong> {recipe.mealType}
-			</p>
-
-			<h2>Ingredients</h2>
-			{recipe.ingredients.length > 0 ? (
-				<table>
-					<thead>
-						<tr>
-							<th>Amount</th>
-							<th>Unit</th>
-							<th>Ingredient</th>
-						</tr>
-					</thead>
-					<tbody>
-						{recipe.ingredients.map((ingredient, index) => (
-							<tr key={index}>
-								<td>{ingredient.amount}</td>
-								<td>{ingredient.unit}</td>
-								<td>{ingredient.ingredient}</td>
-							</tr>
+		<StyledSection>
+			<StyledTop>
+				<StyledPhotoUpload>
+					<StyledPhotoBox></StyledPhotoBox>
+				</StyledPhotoUpload>
+				<StyledRecipeDetails>
+					<h1>{recipe.name}</h1>
+					<span>
+						{recipe.course} | {recipe.mealType}
+					</span>
+					<StyledDetails>
+						<StyledDetailsImg src='/images/dificultad.svg' alt='' />
+						{recipe.difficulty}
+					</StyledDetails>
+					<StyledDetails>
+						<StyledDetailsImg src='/images/reloj.svg' alt='' />
+						{recipe.time.hours}h {recipe.time.minutes}m
+					</StyledDetails>
+					<StyledDetails>
+						<StyledDetailsImg src='/images/slice.svg' alt='' />
+						{recipe.slice}
+					</StyledDetails>
+					<StyledDetails>
+						{recipe.specialties.map((specialty, index) => (
+							<StyledSpecials key={index}>{specialty}</StyledSpecials>
 						))}
-					</tbody>
-				</table>
+					</StyledDetails>
+				</StyledRecipeDetails>
+			</StyledTop>
+
+			<StyledHr />
+
+			<h2>Ingredientes</h2>
+			{recipe.ingredients.length > 0 ? (
+				<div>
+					{recipe.ingredients.map((ingredient, index) => (
+						<p key={index}>
+							<span>{ingredient.amount} </span>
+							<span>{ingredient.unit} </span>
+							<span>{ingredient.ingredient}</span>
+						</p>
+					))}
+				</div>
 			) : (
 				<p>No ingredients available.</p>
 			)}
 
-			<h2>Steps</h2>
+			<StyledHr />
+
+			<h2>Pasos</h2>
 			{recipe.steps.length > 0 ? (
-				<ol>
+				<StyledList>
 					{recipe.steps.map((step, index) => (
-						<li key={index}>{step.text}</li>
+						<p key={index}>
+							<li>{step.text}</li>
+						</p>
 					))}
-				</ol>
+				</StyledList>
 			) : (
 				<p>No steps available.</p>
 			)}
-		</div>
+		</StyledSection>
 	);
 };
 

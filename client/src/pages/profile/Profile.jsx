@@ -56,12 +56,16 @@ const Profile = () => {
 			<StyledHeader>
 				{userLogged && (
 					<StyledColorImg>
-						{userLogged.email.charAt(0).toUpperCase()}
+						{userLogged.displayName
+							? userLogged.displayName.charAt(0).toUpperCase()
+							: userLogged.email.charAt(0).toUpperCase()}
 					</StyledColorImg>
 				)}
 				<StyledColumn>
 					<StyledRow>
-						{userLogged && <span>{userLogged.email}</span>}
+						{userLogged && (
+							<span>{userLogged.displayName || userLogged.email}</span>
+						)}
 						<StyledButton>Edit Profile</StyledButton>
 						<StyledLogout
 							src='/images/logout.svg'
@@ -79,7 +83,7 @@ const Profile = () => {
 			</StyledHeader>
 
 			<div>
-				<h2>My Recipes</h2>
+				<h2>Mis recetas</h2>
 				<StyledMyRecipes>
 					{error ? (
 						<p>Error: {error}</p>

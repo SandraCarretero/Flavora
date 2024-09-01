@@ -63,7 +63,7 @@ const AddRecipe = () => {
 
 	return (
 		<StyledSection>
-			<h2>New recipe</h2>
+			<h2>Nueva Receta</h2>
 			<form
 				onSubmit={e =>
 					handleSubmit(
@@ -92,17 +92,17 @@ const AddRecipe = () => {
 					</StyledPhotoUpload>
 					<StyledRecipeDetails>
 						<StyledFormGroup>
-							<StyledLabel htmlFor='name'>Recipe name</StyledLabel>
+							<StyledLabel htmlFor='name'>Nombre</StyledLabel>
 							<StyledInput
 								type='text'
-								placeholder='Recipe name'
+								placeholder='Nombre'
 								value={name}
 								onChange={e => setName(e.target.value)}
 								required
 							/>
 						</StyledFormGroup>
 						<StyledFormGroup>
-							<StyledLabel htmlFor='slice'>Slices</StyledLabel>
+							<StyledLabel htmlFor='slice'>Porciones</StyledLabel>
 							<StyledInput
 								type='text'
 								placeholder='4'
@@ -112,21 +112,21 @@ const AddRecipe = () => {
 							/>
 						</StyledFormGroup>
 						<StyledFormGroup>
-							<StyledLabel htmlFor='difficulty'>Difficulty</StyledLabel>
+							<StyledLabel htmlFor='difficulty'>Dificultad</StyledLabel>
 							<StyledSelect
 								value={difficulty}
 								onChange={e => setDifficulty(e.target.value)}
 								required
 							>
-								<option value=''>Difficulty</option>
-								<option value='Fácil'>Easy</option>
-								<option value='Media'>Medium</option>
-								<option value='Difícil'>Difficult</option>
+								<option value=''>Dificultad</option>
+								<option value='Fácil'>Fácil</option>
+								<option value='Media'>Media</option>
+								<option value='Difícil'>Difícil</option>
 							</StyledSelect>
 						</StyledFormGroup>
 
 						<StyledFormGroup>
-							<StyledLabel htmlFor='time'>Time</StyledLabel>
+							<StyledLabel htmlFor='time'>Tiempo</StyledLabel>
 							<StyledTimeInputs>
 								<StyledSelect
 									value={time.hours}
@@ -161,8 +161,44 @@ const AddRecipe = () => {
 								</StyledSelect>
 							</StyledTimeInputs>
 						</StyledFormGroup>
+
 						<StyledFormGroup>
-							<StyledLabel htmlFor='specials'>Specials</StyledLabel>
+							<StyledLabel htmlFor='type'>Tipo de plato</StyledLabel>
+							<StyledSelect
+								value={course}
+								onChange={e => setCourse(e.target.value)}
+								required
+							>
+								<option value=''>Tipo de plato</option>
+								<option value='Desayuno'>Desayuno</option>
+								<option value='Entrante'>Entrante</option>
+								<option value='Acompañamiento'>Acompañamiento</option>
+								<option value='Primer plato'>Primer plato</option>
+								<option value='Postre'>Postre</option>
+								<option value='Tentempié'>Tentempié</option>
+							</StyledSelect>
+						</StyledFormGroup>
+						<StyledFormGroup>
+							<StyledLabel htmlFor='mealType'>Tipo de comida</StyledLabel>
+							<StyledSelect
+								value={mealType}
+								onChange={e => setMealType(e.target.value)}
+								required
+							>
+								<option value=''>Tipo de comida</option>
+								<option value='Carne'>Carne</option>
+								<option value='Pescado'>Pescado</option>
+								<option value='Puré'>Pescado</option>
+								<option value='Patatas'>Patatas</option>
+								<option value='Verdura'>Verdura</option>
+								<option value='Pasta'>Pasta</option>
+								<option value='Arroz'>Arroz</option>
+								<option value='Postre'>Postre</option>
+								<option value='Batido'>Batido</option>
+							</StyledSelect>
+						</StyledFormGroup>
+						<StyledFormGroup>
+							<StyledLabel htmlFor='specials'>Especiales</StyledLabel>
 							<StyledSelect
 								value={specialties}
 								onChange={e =>
@@ -178,41 +214,11 @@ const AddRecipe = () => {
 								<option value='Vegano'>Vegano</option>
 							</StyledSelect>
 						</StyledFormGroup>
-						<StyledFormGroup>
-							<StyledLabel htmlFor='type'>Type</StyledLabel>
-							<StyledSelect
-								value={course}
-								onChange={e => setCourse(e.target.value)}
-								required
-							>
-								<option value=''>Tipo de plato</option>
-								<option value='Entrante'>Entrante</option>
-								<option value='Primer plato'>Primer plato</option>
-								<option value='Postre'>Postre</option>
-							</StyledSelect>
-						</StyledFormGroup>
-						<StyledFormGroup>
-							<StyledLabel htmlFor='mealType'>Meal Type</StyledLabel>
-							<StyledSelect
-								value={mealType}
-								onChange={e => setMealType(e.target.value)}
-								required
-							>
-								<option value=''>Tipo de comida</option>
-								<option value='Carne'>Carne</option>
-								<option value='Pescado'>Pescado</option>
-								<option value='Verdura'>Verdura</option>
-								<option value='Pasta'>Pasta</option>
-								<option value='Arroz'>Arroz</option>
-								<option value='Postre'>Postre</option>
-								<option value='Batido'>Batido</option>
-							</StyledSelect>
-						</StyledFormGroup>
 					</StyledRecipeDetails>
 				</StyledFormTop>
 
 				<StyledHr />
-				<h3>Ingredients</h3>
+				<h3>Ingredientes</h3>
 				<StyledIngredientsContainer>
 					{ingredients.map((ingredient, index) => (
 						<Ingredients
@@ -235,7 +241,7 @@ const AddRecipe = () => {
 					))}
 				</StyledIngredientsContainer>
 				<StyledHr />
-				<h3>Steps</h3>
+				<h3>Pasos</h3>
 				<StyledStepsContainer>
 					{steps.map((step, index) => (
 						<Steps
