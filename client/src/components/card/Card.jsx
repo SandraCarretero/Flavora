@@ -28,7 +28,7 @@ const Card = ({ recipe }) => {
 		<StyledContainerCard>
 			<Link to={`/recipe/${recipe._id}`}>
 				<StyledCard>
-					<StyledImage src='/images/ensalada.jpg' alt='' />
+					<StyledImage src={recipe.image} alt={recipe.name} />
 					<StyledText>
 						<StyledCategory>{recipe.name || 'No name'}</StyledCategory>
 						<StyledFilter>

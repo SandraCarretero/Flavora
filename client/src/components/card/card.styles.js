@@ -92,6 +92,7 @@ const StyledDetails = styled.div`
 	justify-content: flex-start;
 	width: 48%;
 	gap: 0.1875rem;
+	font-size: 0.9375rem;
 `;
 
 const StyledDetailsImg = styled.img`

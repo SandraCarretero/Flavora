@@ -11,11 +11,17 @@ const StyledHeader = styled.div`
 	gap: 1.25rem;
 `;
 
+const StyledProfileImage = styled.img`
+	width: 8.125rem;
+	aspect-ratio: 1;
+	border-radius: 50%;
+`;
+
 const StyledColorImg = styled.div`
-	width: 130px;
+	width: 8.125rem;
 	aspect-ratio: 1;
 	background-color: #39db4a;
-	font-size: 50px;
+	font-size: 3.125rem;
 	font-weight: 700;
 	display: flex;
 	justify-content: center;
@@ -63,6 +69,7 @@ export {
 	StyledHeader,
 	StyledButton,
 	StyledLogout,
+	StyledProfileImage,
 	StyledColorImg,
 	StyledColumn,
 	StyledRow,

@@ -22,19 +22,19 @@ const Ingredients = ({
 				onChange={e => handleInputChange(e, ingredient.id, onChange)}
 			/>
 			<StyledSelect
-				name='Unidad de medida'
+				name='unit'
 				value={ingredient.unit}
 				onChange={e => handleInputChange(e, ingredient.id, onChange)}
 			>
 				<option value=''>Unidad de medida</option>
 				<option value='Gusto'>Al gusto</option>
 				<option value='Kg'>Kilogramo</option>
-				<option value='Kg'>Litro</option>
+				<option value='Litro'>Litro</option>
 				<option value='Cucharada'>Cucharada</option>
 				<option value='Cucharadita'>Cucharadita</option>
 				<option value='Pizca'>Pizca</option>
-				<option value='Pizca'>Puñado</option>
-				<option value='Pizca'>Pieza</option>
+				<option value='Puñado'>Puñado</option>
+				<option value='Pieza'>Pieza</option>
 			</StyledSelect>
 			<StyledInput
 				type='text'

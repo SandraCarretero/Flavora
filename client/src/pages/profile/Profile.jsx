@@ -13,14 +13,17 @@ import {
 	StyledLogout,
 	StyledMyRecipes,
 	StyledProfile,
-	StyledRow
+	StyledRow,
+	StyledProfileImage // Asegúrate de tener un estilo para la imagen del perfil
 } from './profile.styles';
+import EditProfile from '../../components/editProfile/EditProfile';
 
 const Profile = () => {
 	const navigate = useNavigate();
-	const { userLogged } = useContext(AuthContext);
+	const { userLogged, setUserLogged } = useContext(AuthContext); // Agrega setUserLogged para actualizar el usuario
 	const [recipes, setRecipes] = useState([]);
 	const [error, setError] = useState(null);
+	const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 
 	useEffect(() => {
 		if (userLogged) {
@@ -51,10 +54,18 @@ const Profile = () => {
 		}
 	}, [userLogged]);
 
+	// Verifica que userLogged esté definido
+	if (!userLogged) {
+		return <p>Loading...</p>; // O puedes usar un spinner o cualquier indicador de carga
+	}
+
 	return (
 		<StyledProfile>
 			<StyledHeader>
-				{userLogged && (
+				{/* Renderiza la imagen de perfil o el círculo con la inicial */}
+				{userLogged.photoURL ? (
+					<StyledProfileImage src={userLogged.photoURL} alt='Profile' />
+				) : (
 					<StyledColorImg>
 						{userLogged.displayName
 							? userLogged.displayName.charAt(0).toUpperCase()
@@ -63,13 +74,14 @@ const Profile = () => {
 				)}
 				<StyledColumn>
 					<StyledRow>
-						{userLogged && (
-							<span>{userLogged.displayName || userLogged.email}</span>
-						)}
-						<StyledButton>Edit Profile</StyledButton>
+						{/* Asegúrate de que userLogged esté definido antes de renderizar */}
+						<span>{userLogged.displayName || userLogged.email}</span>
+						<StyledButton onClick={() => setIsLightboxOpen(true)}>
+							Edit Profile
+						</StyledButton>
 						<StyledLogout
 							src='/images/logout.svg'
-							alt=''
+							alt='Logout'
 							onClick={() => handleLogout(navigate)}
 						/>
 					</StyledRow>
@@ -100,6 +112,14 @@ const Profile = () => {
 					)}
 				</StyledMyRecipes>
 			</div>
+
+			{isLightboxOpen && (
+				<EditProfile
+					user={userLogged}
+					onClose={() => setIsLightboxOpen(false)}
+					onProfileUpdate={setUserLogged} // Pasamos la función para actualizar el usuario
+				/>
+			)}
 		</StyledProfile>
 	);
 };

@@ -34,6 +34,10 @@ const StyledPhotoBox = styled.div`
 	margin-top: 0.9375rem;
 `;
 
+const StyledImage = styled.img`
+	width: 100%;
+`
+
 const StyledRecipeDetails = styled.div`
 	flex: 2;
 	display: flex;
@@ -102,6 +106,7 @@ export {
 	StyledFormTop,
 	StyledPhotoUpload,
 	StyledPhotoBox,
+	StyledImage,
 	StyledRecipeDetails,
 	StyledFormGroup,
 	StyledLabel,

@@ -5,6 +5,7 @@ import {
 	StyledDetails,
 	StyledDetailsImg,
 	StyledHr,
+	StyledImage,
 	StyledList,
 	StyledPhotoBox,
 	StyledPhotoUpload,
@@ -47,7 +48,9 @@ const RecipeDetail = () => {
 		<StyledSection>
 			<StyledTop>
 				<StyledPhotoUpload>
-					<StyledPhotoBox></StyledPhotoBox>
+					<StyledPhotoBox>
+						<StyledImage src={recipe.image} alt={recipe.name} />
+					</StyledPhotoBox>
 				</StyledPhotoUpload>
 				<StyledRecipeDetails>
 					<h1>{recipe.name}</h1>

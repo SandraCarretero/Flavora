@@ -29,6 +29,7 @@ recipesController.createRecipes = async (req, res) => {
     mealType,
     ingredients,
     steps,
+    image,
     userId
   } = req.body;
 
@@ -47,6 +48,7 @@ recipesController.createRecipes = async (req, res) => {
       mealType,
       ingredients,
       steps,
+      image,
       userId
     });
 
