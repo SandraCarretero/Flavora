@@ -6,12 +6,9 @@ const recipesController = {};
 
 // Obtener todas las recetas
 recipesController.getRecipes = async (req, res) => {
-  const { userId } = req.query;
-
   try {
-    // Buscar recetas por userId
-    const recipes = await Recipe.find({ userId });
-    res.json(recipes); // Asegúrate de que se envíe JSON
+    const recipes = await Recipe.find();
+    res.json(recipes);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
