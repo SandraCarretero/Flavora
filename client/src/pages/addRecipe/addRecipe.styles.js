@@ -32,11 +32,12 @@ const StyledPhotoBox = styled.div`
 	font-size: 0.875rem;
 	color: #666;
 	margin-top: 0.9375rem;
+	overflow: hidden;
 `;
 
 const StyledImage = styled.img`
 	width: 100%;
-`
+`;
 
 const StyledRecipeDetails = styled.div`
 	flex: 2;

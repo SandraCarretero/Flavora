@@ -23,8 +23,10 @@ const StyledPhotoUpload = styled.div`
 const StyledPhotoBox = styled.div`
 	width: 100%;
 	height: 15rem;
-	background-color: #f1f1f1;
-	border: 2px dashed #ccc;
+	background-color: ${({ $hasImage }) =>
+		$hasImage ? 'transparent' : '#f1f1f1'};
+	border: ${({ $hasImage }) =>
+		$hasImage ? '1px solid #39db4a' : '2px dashed #ccc'};
 	border-radius: 0.625rem;
 	display: flex;
 	align-items: center;
@@ -32,11 +34,34 @@ const StyledPhotoBox = styled.div`
 	font-size: 0.875rem;
 	color: #666;
 	margin-top: 0.9375rem;
+	position: relative;
+	overflow: hidden;
+
+	&::before {
+		content: '';
+		background-color: #39db4a;
+		width: 2.5rem;
+		height: 2.5rem;
+		position: absolute;
+		top: 0;
+		right: 0;
+		border-radius: 0 0 0 0.625rem;
+	}
+
+	&::after {
+		content: url(/images/noLike.svg);
+		width: 1.25rem;
+		position: absolute;
+		height: 1.25rem;
+		top: 0.625rem;
+		right: 0.625rem;
+		cursor: pointer;
+	}
 `;
 
 const StyledImage = styled.img`
 	width: 100%;
-`
+`;
 
 const StyledRecipeDetails = styled.div`
 	flex: 2;
@@ -76,6 +101,49 @@ const StyledList = styled.ol`
 	padding-left: 1.25rem;
 `;
 
+const StyledMenuIcon = styled.div`
+	top: 10px;
+	right: 10px;
+	cursor: pointer;
+
+	img {
+		width: 24px;
+		height: 24px;
+	}
+`;
+
+const StyledMenuOptions = styled.div`
+	position: absolute;
+	top: 5.3125rem;
+	right: 10.625rem;
+	background-color: white;
+	border: 0.0625rem solid #ccc;
+	border-radius: 5px;
+	box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+	z-index: 10;
+`;
+
+const StyledMenuOptionBtn = styled.button`
+	display: flex;
+	align-items: center;
+	padding: 10px;
+	background: none;
+	border: none;
+	cursor: pointer;
+	width: 100%;
+	text-align: left;
+
+	img {
+		width: 20px;
+		height: 20px;
+		margin-right: 10px;
+	}
+
+	&:hover {
+		background-color: #f0f0f0;
+	}
+`;
+
 export {
 	StyledSection,
 	StyledTop,
@@ -87,5 +155,8 @@ export {
 	StyledDetailsImg,
 	StyledSpecials,
 	StyledHr,
-	StyledList
+	StyledList,
+	StyledMenuIcon,
+	StyledMenuOptions,
+	StyledMenuOptionBtn
 };

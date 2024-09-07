@@ -1,9 +1,10 @@
+import { useParams, useNavigate } from 'react-router-dom';
+import { useContext, useEffect, useState, useRef } from 'react';
+import { patchData, getData } from '../../utils/api';
+import { AuthContext } from '../../context/Auth.context';
 import { v4 } from 'uuid';
-import { useState, useContext, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { postData } from '../../utils/api'; // Utilidad para hacer peticiones POST
-import { URLS } from '../../constants/urls'; // Constantes de URL
-import { AuthContext } from '../../context/Auth.context'; // Importa el contexto
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { storage } from '../../config/firebase.config';
 import {
 	StyledButton,
 	StyledFormGroup,
@@ -20,13 +21,15 @@ import {
 	StyledSelect,
 	StyledStepsContainer,
 	StyledTimeInputs
-} from './addRecipe.styles'; // Asegúrate de tener estos estilos
+} from '../addRecipe/addRecipe.styles'; // Asegúrate de tener estos estilos
 import Ingredients from '../../components/ingredients/Ingredients';
 import Steps from '../../components/steps/Steps';
-import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-import { storage } from '../../config/firebase.config';
 
-const AddRecipe = () => {
+const EditRecipe = () => {
+	const { id } = useParams();
+	const navigate = useNavigate();
+	const { userLogged } = useContext(AuthContext);
+
 	const [name, setName] = useState('');
 	const [slice, setSlice] = useState('');
 	const [difficulty, setDifficulty] = useState('');
@@ -35,39 +38,91 @@ const AddRecipe = () => {
 	const [course, setCourse] = useState('');
 	const [mealType, setMealType] = useState('');
 	const [imageUrl, setImageUrl] = useState('');
-	const [ingredients, setIngredients] = useState([
-		{ id: v4(), amount: '', unit: '', ingredient: '' }
-	]);
-	const [steps, setSteps] = useState([{ id: v4(), text: '' }]);
+	const [ingredients, setIngredients] = useState([]);
+	const [steps, setSteps] = useState([]);
+	const [error, setError] = useState(null);
 
 	const fileInputRef = useRef(null);
-	const navigate = useNavigate();
-	const { userLogged } = useContext(AuthContext);
+
+	useEffect(() => {
+		const fetchRecipe = async () => {
+			try {
+				const response = await getData(
+					`http://localhost:3000/api/recipes/${id}`
+				);
+				if (response.error) {
+					setError(response.error);
+				} else {
+					setName(response.name);
+					setSlice(response.slice);
+					setDifficulty(response.difficulty);
+					setTime(response.time);
+					setSpecialties(response.specialties);
+					setCourse(response.course);
+					setMealType(response.mealType);
+					setImageUrl(response.image);
+					setIngredients(response.ingredients);
+					setSteps(response.steps);
+				}
+			} catch (error) {
+				setError(error.message);
+			}
+		};
+		fetchRecipe();
+	}, [id]);
+
+	const handleImageChange = async e => {
+		const file = e.target.files[0];
+		if (file) {
+			const nameWithoutExtension = file.name.substring(
+				0,
+				file.name.lastIndexOf('.')
+			);
+			const finalName = `${nameWithoutExtension}-${v4()}`;
+			const storageRef = ref(storage, `recipes/${finalName}`);
+			try {
+				await uploadBytes(storageRef, file);
+				const url = await getDownloadURL(storageRef);
+				setImageUrl(url);
+			} catch (error) {
+				console.error('Error uploading image:', error);
+			}
+		}
+	};
+
+	const handleSubmit = async event => {
+		event.preventDefault();
+		if (!userLogged) {
+			console.error('No user is logged in.');
+			return;
+		}
+		try {
+			await patchData(`http://localhost:3000/api/recipes/${id}`, {
+				name,
+				slice,
+				difficulty,
+				time,
+				specialties,
+				course,
+				mealType,
+				image: imageUrl,
+				ingredients,
+				steps,
+				userId: userLogged.uid
+			});
+			navigate(`/profile`);
+		} catch (error) {
+			console.error('Error al editar receta:', error);
+		}
+	};
+
+	if (error) return <p>Error: {error}</p>;
+	if (!name) return <p>Loading...</p>;
 
 	return (
 		<StyledSection>
-			<h2>Nueva Receta</h2>
-			<form
-				onSubmit={e =>
-					handleSubmit(
-						e,
-						userLogged,
-						{
-							name,
-							slice,
-							difficulty,
-							time,
-							specialties,
-							course,
-							mealType,
-							image: imageUrl,
-							ingredients,
-							steps
-						},
-						navigate
-					)
-				}
-			>
+			<h2>Editar Receta</h2>
+			<form onSubmit={handleSubmit}>
 				<StyledFormTop>
 					<StyledPhotoUpload>
 						<StyledLabel htmlFor='photo'>Seleccionar foto</StyledLabel>
@@ -75,7 +130,7 @@ const AddRecipe = () => {
 							type='file'
 							id='photo'
 							ref={fileInputRef}
-							onChange={e => handleImageChange(e, setImageUrl)}
+							onChange={handleImageChange}
 							accept='image/*'
 						/>
 						<StyledPhotoBox>
@@ -122,7 +177,10 @@ const AddRecipe = () => {
 								<StyledSelect
 									value={time.hours}
 									onChange={e =>
-										handleTimeChange('hours', e.target.value, setTime)
+										setTime(prevTime => ({
+											...prevTime,
+											hours: parseInt(e.target.value, 10)
+										}))
 									}
 									required
 								>
@@ -135,7 +193,10 @@ const AddRecipe = () => {
 								<StyledSelect
 									value={time.minutes}
 									onChange={e =>
-										handleTimeChange('minutes', e.target.value, setTime)
+										setTime(prevTime => ({
+											...prevTime,
+											minutes: parseInt(e.target.value, 10)
+										}))
 									}
 									required
 								>
@@ -210,24 +271,13 @@ const AddRecipe = () => {
 							key={ingredient.id}
 							ingredient={ingredient}
 							onChange={(id, name, value) =>
-								handleIngredientChange(
-									id,
-									name,
-									value,
-									ingredients,
-									setIngredients
-								)
+								handleIngredientChange(id, name, value, setIngredients)
 							}
-							onAdd={() => addIngredient(setIngredients, ingredients)}
+							onAdd={() => addIngredient(setIngredients)}
 							onDelete={
 								index === 0 && ingredients.length === 1
 									? null
-									: () =>
-											removeIngredient(
-												setIngredients,
-												ingredients,
-												ingredient.id
-											)
+									: () => removeIngredient(ingredient.id, setIngredients)
 							}
 							showAddButton={index === ingredients.length - 1}
 						/>
@@ -240,110 +290,56 @@ const AddRecipe = () => {
 						<Steps
 							key={step.id}
 							step={step}
-							onChange={(id, value) =>
-								handleStepChange(id, value, steps, setSteps)
-							}
-							onAdd={() => addStep(setSteps, steps)}
+							onChange={(id, value) => handleStepChange(id, value, setSteps)}
+							onAdd={() => addStep(setSteps)}
 							onDelete={
 								index === 0 && steps.length === 1
 									? null
-									: () => removeStep(setSteps, steps, step.id)
+									: () => removeStep(step.id, setSteps)
 							}
 							showAddButton={index === steps.length - 1}
 						/>
 					))}
 				</StyledStepsContainer>
-				<StyledButton type='submit'>Añadir Receta</StyledButton>
+				<StyledButton type='submit'>Guardar Cambios</StyledButton>
 			</form>
 		</StyledSection>
 	);
 };
 
-
-const addIngredient = (setIngredients, ingredients) => {
-	setIngredients([
-		...ingredients,
+const addIngredient = setIngredients => {
+	setIngredients(prevIngredients => [
+		...prevIngredients,
 		{ id: v4(), amount: '', unit: '', ingredient: '' }
 	]);
 };
 
-const removeIngredient = (setIngredients, ingredients, id) => {
-	setIngredients(ingredients.filter(ingredient => ingredient.id !== id));
+const removeIngredient = (id, setIngredients) => {
+	setIngredients(prevIngredients =>
+		prevIngredients.filter(ingredient => ingredient.id !== id)
+	);
 };
 
-const addStep = (setSteps, steps) => {
-	setSteps([...steps, { id: v4(), text: '' }]);
+const addStep = setSteps => {
+	setSteps(prevSteps => [...prevSteps, { id: v4(), text: '' }]);
 };
 
-const removeStep = (setSteps, steps, id) => {
-	setSteps(steps.filter(step => step.id !== id));
+const removeStep = (id, setSteps) => {
+	setSteps(prevSteps => prevSteps.filter(step => step.id !== id));
 };
 
-const handleImageChange = async (e, setImageUrl) => {
-	const file = e.target.files[0];
-	if (file) {
-		const nameWithoutExtension = file.name.substring(
-			0,
-			file.name.lastIndexOf('.')
-		);
-		const finalName = `${nameWithoutExtension}-${v4()}`;
-		const storageRef = ref(storage, `recipes/${finalName}`);
-		try {
-			await uploadBytes(storageRef, file);
-			const url = await getDownloadURL(storageRef);
-			console.log('Image URL:', url);
-			setImageUrl(url);
-		} catch (error) {
-			console.error('Error uploading image:', error);
-		}
-	}
-};
-
-const handleIngredientChange = (
-	id,
-	name,
-	value,
-	ingredients,
-	setIngredients
-) => {
-	setIngredients(
-		ingredients.map(ingredient =>
+const handleIngredientChange = (id, name, value, setIngredients) => {
+	setIngredients(prevIngredients =>
+		prevIngredients.map(ingredient =>
 			ingredient.id === id ? { ...ingredient, [name]: value } : ingredient
 		)
 	);
 };
 
-const handleStepChange = (id, value, steps, setSteps) => {
-	setSteps(
-		steps.map(step => (step.id === id ? { ...step, text: value } : step))
+const handleStepChange = (id, value, setSteps) => {
+	setSteps(prevSteps =>
+		prevSteps.map(step => (step.id === id ? { ...step, text: value } : step))
 	);
 };
 
-const handleTimeChange = (type, value, setTime) => {
-	const numericValue = parseInt(value, 10);
-	setTime(prevTime => ({
-		...prevTime,
-		[type]: isNaN(numericValue) ? 0 : numericValue
-	}));
-};
-
-const handleSubmit = async (event, userLogged, recipeData, navigate) => {
-	event.preventDefault();
-
-	if (!userLogged) {
-		console.error('No user is logged in.');
-		return;
-	}
-
-	try {
-		await postData(URLS.API_RECIPES, { ...recipeData, userId: userLogged.uid });
-		navigate('/profile');
-	} catch (error) {
-		console.error(
-			'Error al crear la receta:',
-			error.response || error.message || error
-		);
-	}
-};
-
-export default AddRecipe;
+export default EditRecipe;

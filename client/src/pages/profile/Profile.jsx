@@ -20,7 +20,7 @@ import EditProfile from '../../components/editProfile/EditProfile';
 
 const Profile = () => {
 	const navigate = useNavigate();
-	const { userLogged, setUserLogged } = useContext(AuthContext); // Agrega setUserLogged para actualizar el usuario
+	const { userLogged, setUserLogged } = useContext(AuthContext); 
 	const [recipes, setRecipes] = useState([]);
 	const [error, setError] = useState(null);
 	const [isLightboxOpen, setIsLightboxOpen] = useState(false);
@@ -62,7 +62,7 @@ const Profile = () => {
 	return (
 		<StyledProfile>
 			<StyledHeader>
-				{/* Renderiza la imagen de perfil o el círculo con la inicial */}
+				
 				{userLogged.photoURL ? (
 					<StyledProfileImage src={userLogged.photoURL} alt='Profile' />
 				) : (

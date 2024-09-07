@@ -6,6 +6,8 @@ import Login from '../pages/login/Login';
 import Profile from '../pages/profile/Profile';
 import AddRecipe from '../pages/addRecipe/AddRecipe';
 import RecipeDetail from '../pages/recipeDetail/RecipeDetail';
+import EditRecipe from '../pages/editRecipe/EditRecipe';
+import Meals from '../pages/meals/Meals';
 
 const Router = () => {
 	return (
@@ -17,6 +19,8 @@ const Router = () => {
 				<Route path='/profile' element={<Profile />} />
 				<Route path='/addRecipe' element={<AddRecipe />} />
 				<Route path='/recipe/:id' element={<RecipeDetail />} />
+				<Route path="/editRecipe/:id" element={<EditRecipe />} />
+				<Route path="/meals" element={<Meals />} />
 			</Route>
 		</Routes>
 	);

@@ -1,8 +1,16 @@
 import styled from 'styled-components';
 
-const LightboxBackground = styled.div`
+const StyledPhotoBox = styled.div`
+	max-width: 100%;
+	max-height: 200px;
+	border-radius: 50%;
+	margin-bottom: 10px;
+	object-fit: cover;
+`;
+
+const StyledLightboxBackground = styled.div`
 	position: fixed;
-	top: 0;
+	top: 1.875rem;
 	left: 0;
 	width: 100%;
 	height: 100%;
@@ -12,7 +20,7 @@ const LightboxBackground = styled.div`
 	align-items: center;
 `;
 
-const LightboxContainer = styled.div`
+const StyledLightboxContainer = styled.div`
 	background: white;
 	padding: 1.25rem;
 	border-radius: 0.625rem;
@@ -23,12 +31,12 @@ const LightboxContainer = styled.div`
 	align-items: center;
 `;
 
-const LightboxHeader = styled.h2`
+const StyledLightboxHeader = styled.h2`
 	margin: 0;
 	margin-bottom: 0.625rem;
 `;
 
-const LightboxButton = styled.button`
+const StyledLightboxButton = styled.button`
 	font-size: 1.125rem;
 	color: #39db4a;
 	border: 0.0625rem solid #39db4a;
@@ -38,7 +46,20 @@ const LightboxButton = styled.button`
 	cursor: pointer;
 `;
 
-const PreviewImage = styled.img`
+const StyledColorImg = styled.div`
+	width: 12.5rem;
+	aspect-ratio: 1;
+	background-color: #f1fcf2;
+	font-size: 3.125rem;
+	font-weight: 700;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: #39db4a;
+	border-radius: 50%;
+`;
+
+const StyledPreviewImage = styled.img`
 	max-width: 100%;
 	max-height: 200px;
 	border-radius: 50%;
@@ -92,14 +113,59 @@ const StyledButtonContent = styled.div`
 	gap: 0.9375rem;
 `;
 
+const StyledContainerImg = styled.div`
+	position: relative;
+`;
+
+const StyledInputImg = styled.input`
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	top: 73%;
+	left: 73%;
+	width: 50px;
+	height: 51px;
+	cursor: pointer;
+`;
+
+const StyledLabelImg = styled.label`
+	position: absolute;
+	left: 73%;
+	top: 73%;
+	font-weight: 600;
+	color: #fff;
+	background-color: #39db4a;
+	transition: all 0.5s;
+	cursor: pointer;
+	text-transform: uppercase;
+	width: 46px;
+	display: flex;
+	border-radius: 50%;
+	aspect-ratio: 1;
+	text-align: center;
+	justify-content: center;
+	align-items: center;
+`;
+
+const StyledDelete = styled.img`
+	width: 1.75rem;
+	cursor: pointer;
+`;
+
 export {
-	LightboxBackground,
-	LightboxContainer,
-	LightboxHeader,
-	LightboxButton,
-	PreviewImage,
+	StyledPhotoBox,
+	StyledLightboxBackground,
+	StyledLightboxContainer,
+	StyledLightboxHeader,
+	StyledLightboxButton,
+	StyledColorImg,
+	StyledPreviewImage,
 	StyledFormElement,
 	StyledInput,
 	StyledUnderline,
-	StyledButtonContent
+	StyledButtonContent,
+	StyledContainerImg,
+	StyledInputImg,
+	StyledLabelImg,
+	StyledDelete
 };

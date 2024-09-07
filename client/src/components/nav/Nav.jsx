@@ -24,7 +24,7 @@ const Nav = () => {
 			<nav>
 				<StyledList>
 					<li>
-						<Link to='/'>Comidas</Link>
+						<Link to='/meals'>Comidas</Link>
 					</li>
 					<li>
 						<Link to='/'>Categorías</Link>

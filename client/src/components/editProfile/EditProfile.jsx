@@ -1,38 +1,64 @@
 import { useState } from 'react';
 import {
-	LightboxBackground,
-	LightboxButton,
-	LightboxContainer,
-	LightboxHeader,
-	PreviewImage,
+	StyledLightboxBackground,
+	StyledLightboxButton,
+	StyledLightboxContainer,
+	StyledLightboxHeader,
+	StyledPreviewImage,
 	StyledButtonContent,
+	StyledContainerImg,
+	StyledDelete,
 	StyledFormElement, // Asegúrate de tener un estilo para la vista previa
 	StyledInput,
-	StyledUnderline
+	StyledInputImg,
+	StyledLabelImg,
+	StyledUnderline,
+	StyledPhotoBox,
+	StyledColorImg
 } from './editProfile.styles';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import { auth, storage } from '../../config/firebase.config';
-import { updateProfile } from 'firebase/auth';
+import { deleteUser, updateProfile } from 'firebase/auth';
 import { v4 } from 'uuid';
+import { useNavigate } from 'react-router-dom';
 
 // Componente para la edición del perfil
 const EditProfile = ({ onClose, user, onProfileUpdate }) => {
+	const navigate = useNavigate();
+
 	const [displayName, setDisplayName] = useState(user.displayName || '');
 	const [previewURL, setPreviewURL] = useState(user.photoURL || ''); // Estado para la vista previa
 	const [profileImage, setProfileImage] = useState(null);
 	const [loading, setLoading] = useState(false);
 
 	return (
-		<LightboxBackground onClick={onClose}>
-			<LightboxContainer onClick={e => e.stopPropagation()}>
-				<LightboxHeader>Editar Perfil</LightboxHeader>
+		<StyledLightboxBackground onClick={onClose}>
+			<StyledLightboxContainer onClick={e => e.stopPropagation()}>
+				<StyledLightboxHeader>Editar Perfil</StyledLightboxHeader>
 
-				{previewURL && <PreviewImage src={previewURL} alt='Preview' />}
-				<input
-					type='file'
-					accept='image/*'
-					onChange={e => handleImageChange(e, setProfileImage, setPreviewURL)}
-				/>
+				<StyledContainerImg>
+					<StyledPhotoBox>
+						{previewURL ? (
+							<StyledPreviewImage src={previewURL} alt='Preview' />
+						) : (
+							// Mostrar círculo con la inicial si no hay imagen
+							<StyledColorImg>
+								{displayName
+									? displayName.charAt(0).toUpperCase() // Inicial del nombre
+									: user.email.charAt(0).toUpperCase()}{' '}
+								{/* Si no hay nombre, usa el correo */}
+							</StyledColorImg>
+						)}
+					</StyledPhotoBox>
+					<StyledInputImg
+						id='photo'
+						type='file'
+						name='photo'
+						accept='image/*'
+						onChange={e => handleImageChange(e, setProfileImage, setPreviewURL)}
+					/>
+					<StyledLabelImg htmlFor='photo'>+</StyledLabelImg>
+				</StyledContainerImg>
 
 				<StyledFormElement>
 					<StyledInput
@@ -45,7 +71,7 @@ const EditProfile = ({ onClose, user, onProfileUpdate }) => {
 				</StyledFormElement>
 
 				<StyledButtonContent>
-					<LightboxButton
+					<StyledLightboxButton
 						onClick={() =>
 							handleSubmit(user, displayName, profileImage, setLoading, () => {
 								onProfileUpdate({
@@ -59,11 +85,16 @@ const EditProfile = ({ onClose, user, onProfileUpdate }) => {
 						disabled={loading}
 					>
 						{loading ? 'Saving...' : 'Save Changes'}
-					</LightboxButton>
-					<LightboxButton onClick={onClose}>Cancel</LightboxButton>
+					</StyledLightboxButton>
+					<StyledLightboxButton onClick={onClose}>Cancel</StyledLightboxButton>
+					<StyledDelete
+						src='images/delete.svg'
+						alt=''
+						onClick={() => handleDelete(navigate)}
+					/>
 				</StyledButtonContent>
-			</LightboxContainer>
-		</LightboxBackground>
+			</StyledLightboxContainer>
+		</StyledLightboxBackground>
 	);
 };
 
@@ -79,6 +110,15 @@ const handleImageChange = (event, setProfileImage, setPreviewURL) => {
 			setPreviewURL(reader.result);
 		};
 		reader.readAsDataURL(file);
+	}
+};
+
+const handleDelete = async navigate => {
+	try {
+		await deleteUser(auth.currentUser);
+		navigate('/');
+	} catch (error) {
+		console.error('Error al eliminar usuario:', error.message);
 	}
 };
 

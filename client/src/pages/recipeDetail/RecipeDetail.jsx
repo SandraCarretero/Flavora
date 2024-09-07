@@ -1,6 +1,6 @@
-import { useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { getData } from '../../utils/api';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useContext, useEffect, useState } from 'react';
+import { deleteData, getData } from '../../utils/api';
 import {
 	StyledDetails,
 	StyledDetailsImg,
@@ -12,13 +12,21 @@ import {
 	StyledRecipeDetails,
 	StyledSection,
 	StyledSpecials,
-	StyledTop
+	StyledTop,
+	StyledMenuIcon,
+	StyledMenuOptions,
+	StyledMenuOptionBtn
 } from './recipeDetail.styles';
+import { AuthContext } from '../../context/Auth.context';
 
 const RecipeDetail = () => {
-	const { id } = useParams(); // Obtener el ID de la receta desde la URL
+	const { id } = useParams();
+	const navigate = useNavigate();
 	const [recipe, setRecipe] = useState(null);
 	const [error, setError] = useState(null);
+	const [menuOpen, setMenuOpen] = useState(false);
+
+	const { userLogged } = useContext(AuthContext);
 
 	useEffect(() => {
 		const fetchRecipe = async () => {
@@ -44,11 +52,13 @@ const RecipeDetail = () => {
 	if (error) return <p>Error: {error}</p>;
 	if (!recipe) return <p>Loading...</p>;
 
+	const isRecipeOwner = userLogged && recipe.userId === userLogged.uid;
+
 	return (
 		<StyledSection>
 			<StyledTop>
 				<StyledPhotoUpload>
-					<StyledPhotoBox>
+					<StyledPhotoBox $hasImage={!!recipe.image}>
 						<StyledImage src={recipe.image} alt={recipe.name} />
 					</StyledPhotoBox>
 				</StyledPhotoUpload>
@@ -75,6 +85,24 @@ const RecipeDetail = () => {
 						))}
 					</StyledDetails>
 				</StyledRecipeDetails>
+				{isRecipeOwner && (
+					<StyledMenuIcon
+						onClick={() => handleMenuToggle(setMenuOpen, menuOpen)}
+					>
+						<img src='/images/puntos.svg' alt='Menu' />
+					</StyledMenuIcon>
+				)}
+
+				{menuOpen && (
+					<StyledMenuOptions>
+						<StyledMenuOptionBtn onClick={() => handleEdit(navigate, id)}>
+							<img src='/images/edit.svg' alt='Editar' /> Editar
+						</StyledMenuOptionBtn>
+						<StyledMenuOptionBtn onClick={() => handleDelete(navigate, id)}>
+							<img src='/images/delete.svg' alt='Borrar' /> Borrar
+						</StyledMenuOptionBtn>
+					</StyledMenuOptions>
+				)}
 			</StyledTop>
 
 			<StyledHr />
@@ -110,6 +138,23 @@ const RecipeDetail = () => {
 			)}
 		</StyledSection>
 	);
+};
+
+const handleMenuToggle = (setMenuOpen, menuOpen) => {
+	setMenuOpen(!menuOpen);
+};
+
+const handleEdit = (navigate, id) => {
+	navigate(`/editRecipe/${id}`);
+};
+
+const handleDelete = async (navigate, id) => {
+	try {
+		await deleteData(`http://localhost:3000/api/recipes/${id}`);
+		navigate('/profile');
+	} catch (error) {
+		console.error('Error al eliminar receta:', error);
+	}
 };
 
 export default RecipeDetail;
