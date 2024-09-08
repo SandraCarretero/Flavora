@@ -36,27 +36,6 @@ const StyledPhotoBox = styled.div`
 	margin-top: 0.9375rem;
 	position: relative;
 	overflow: hidden;
-
-	&::before {
-		content: '';
-		background-color: #39db4a;
-		width: 2.5rem;
-		height: 2.5rem;
-		position: absolute;
-		top: 0;
-		right: 0;
-		border-radius: 0 0 0 0.625rem;
-	}
-
-	&::after {
-		content: url(/images/noLike.svg);
-		width: 1.25rem;
-		position: absolute;
-		height: 1.25rem;
-		top: 0.625rem;
-		right: 0.625rem;
-		cursor: pointer;
-	}
 `;
 
 const StyledImage = styled.img`

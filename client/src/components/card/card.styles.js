@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
 const StyledContainerCard = styled.div`
-	width: 25%;
+	width: max-content;
 	position: relative;
 
 	&::before {
@@ -12,7 +12,7 @@ const StyledContainerCard = styled.div`
 		position: absolute;
 		top: 0;
 		right: 0;
-		border-radius: 0 0 0 0.625rem;
+		border-radius: 0 0.625rem 0 0.625rem;
 		z-index: 1;
 	}
 `;

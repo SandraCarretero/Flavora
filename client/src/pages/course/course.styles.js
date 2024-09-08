@@ -16,11 +16,14 @@ const StyledFilter = styled.select`
 `;
 
 const StyledMealsContainer = styled.div`
-	margin-top: 3.25rem;
 	display: flex;
 	flex-wrap: wrap;
 	justify-content: center;
 	row-gap: 2.5rem;
+	column-gap: 3.75rem;
+	width: 80%;
+	margin: 0 auto;
+	margin-top: 3.25rem;
 `;
 
 export {

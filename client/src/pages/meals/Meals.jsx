@@ -19,7 +19,7 @@ const Meals = () => {
 		const fetchRecipes = async () => {
 			try {
 				const response = await getData('http://localhost:3000/api/recipes');
-				console.log('API Response:', response); // Registra la respuesta de la API
+				console.log('API Response:', response);
 
 				if (response.error) {
 					setError(response.error);
@@ -27,7 +27,7 @@ const Meals = () => {
 				} else {
 					if (Array.isArray(response)) {
 						setRecipes(response);
-						setFilteredRecipes(response); // Inicialmente, muestra todas las recetas
+						setFilteredRecipes(response);
 					} else {
 						setError('Unexpected response format');
 						console.error('Unexpected response format:', response);
@@ -43,15 +43,15 @@ const Meals = () => {
 	}, []);
 
 	useEffect(() => {
-		console.log('Selected Course:', selectedMeal); // Registra el curso seleccionado
-		console.log('All Recipes:', recipes); // Registra todas las recetas
+		console.log('Selected Course:', selectedMeal);
+		console.log('All Recipes:', recipes);
 		if (selectedMeal) {
 			const filtered = recipes.filter(
 				recipe =>
 					recipe.mealType &&
 					recipe.mealType.toLowerCase() === selectedMeal.toLowerCase()
 			);
-			console.log('Filtered Recipes:', filtered); // Registra las recetas filtradas
+			console.log('Filtered Recipes:', filtered);
 			setFilteredRecipes(filtered);
 		} else {
 			setFilteredRecipes(recipes);
@@ -69,6 +69,7 @@ const Meals = () => {
 					<option value=''>Todos</option>
 					<option value='Carne'>Carne</option>
 					<option value='Pollo'>Pollo</option>
+					<option value='Ensalada'>Ensalada</option>
 					<option value='Pescado'>Pescado</option>
 					<option value='Puré'>Puré</option>
 					<option value='Patatas'>Patatas</option>

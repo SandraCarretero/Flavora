@@ -10,7 +10,6 @@ const Favourite = () => {
 	useEffect(() => {
 		const fetchRecipes = async () => {
 			try {
-				// Solicitud a la nueva ruta para obtener recetas aleatorias
 				const response = await getData(
 					`http://localhost:3000/api/recipes/random`
 				);

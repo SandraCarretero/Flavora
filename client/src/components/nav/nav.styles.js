@@ -8,7 +8,7 @@ const StyledHeader = styled.header`
 	display: flex;
 	justify-content: space-between;
 	padding: 1.25rem;
-	z-index: 1;
+	z-index: 2;
 `;
 
 const StyledList = styled.ul`

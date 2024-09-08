@@ -1,9 +1,9 @@
 import { v4 } from 'uuid';
 import { useState, useContext, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { postData } from '../../utils/api'; // Utilidad para hacer peticiones POST
-import { URLS } from '../../constants/urls'; // Constantes de URL
-import { AuthContext } from '../../context/Auth.context'; // Importa el contexto
+import { postData } from '../../utils/api'; 
+import { URLS } from '../../constants/urls'; 
+import { AuthContext } from '../../context/Auth.context'; 
 import {
 	StyledButton,
 	StyledFormGroup,
@@ -20,7 +20,7 @@ import {
 	StyledSelect,
 	StyledStepsContainer,
 	StyledTimeInputs
-} from './addRecipe.styles'; // Asegúrate de tener estos estilos
+} from './addRecipe.styles'; 
 import Ingredients from '../../components/ingredients/Ingredients';
 import Steps from '../../components/steps/Steps';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
@@ -173,6 +173,7 @@ const AddRecipe = () => {
 								<option value=''>Tipo de comida</option>
 								<option value='Carne'>Carne</option>
 								<option value='Pollo'>Pollo</option>
+								<option value='Ensalada'>Ensalada</option>
 								<option value='Pescado'>Pescado</option>
 								<option value='Puré'>Puré</option>
 								<option value='Patatas'>Patatas</option>

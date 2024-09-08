@@ -3,7 +3,6 @@ import { auth } from '../../config/firebase.config';
 import { Link, useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '../../context/Auth.context';
-import { getData } from '../../utils/api';
 import Card from '../../components/card/Card';
 import {
 	StyledButton,
@@ -14,14 +13,20 @@ import {
 	StyledMyRecipes,
 	StyledProfile,
 	StyledRow,
-	StyledProfileImage // Asegúrate de tener un estilo para la imagen del perfil
+	StyledProfileImage,
+	StyledTabs,
+	StyledTab,
+	StyledRecipesContainer
 } from './profile.styles';
 import EditProfile from '../../components/editProfile/EditProfile';
+import { getData } from '../../utils/api';
 
 const Profile = () => {
 	const navigate = useNavigate();
-	const { userLogged, setUserLogged } = useContext(AuthContext); 
+	const { userLogged, setUserLogged } = useContext(AuthContext);
 	const [recipes, setRecipes] = useState([]);
+	const [likedRecipes, setLikedRecipes] = useState([]); 
+	const [activeTab, setActiveTab] = useState('myRecipes'); 
 	const [error, setError] = useState(null);
 	const [isLightboxOpen, setIsLightboxOpen] = useState(false);
 
@@ -30,7 +35,7 @@ const Profile = () => {
 			const fetchRecipes = async () => {
 				try {
 					const response = await getData(
-						`http://localhost:3000/api/recipes?userId=${userLogged.uid}`
+						`http://localhost:3000/api/recipes/user?userId=${userLogged.uid}`
 					);
 
 					if (response.error) {
@@ -54,15 +59,82 @@ const Profile = () => {
 		}
 	}, [userLogged]);
 
-	// Verifica que userLogged esté definido
+	useEffect(() => {
+		if (userLogged && activeTab === 'likedRecipes') {
+			const fetchAndFilterLikedRecipes = async () => {
+				try {
+					const response = await getData(`http://localhost:3000/api/recipes`);
+
+					if (response.error) {
+						setError(response.error);
+						console.error('Error fetching all recipes:', response.error);
+					} else {
+						if (Array.isArray(response)) {
+							const likedRecipes = response.filter(recipe =>
+								recipe.likedBy.includes(userLogged.uid)
+							);
+							setLikedRecipes(likedRecipes);
+						} else {
+							setError('Unexpected response format');
+							console.error('Unexpected response format:', response);
+						}
+					}
+				} catch (error) {
+					setError(error.message);
+					console.error('Error fetching all recipes:', error);
+				}
+			};
+			fetchAndFilterLikedRecipes();
+		}
+	}, [userLogged, activeTab]);
+
 	if (!userLogged) {
-		return <p>Loading...</p>; // O puedes usar un spinner o cualquier indicador de carga
+		return <p>Loading...</p>;
 	}
+
+	const renderRecipes = () => {
+		if (activeTab === 'myRecipes') {
+			return (
+				<StyledMyRecipes>
+					{error ? (
+						<p>Error: {error}</p>
+					) : recipes.length > 0 ? (
+						recipes.map(recipe =>
+							recipe && recipe.name ? (
+								<Card key={recipe._id} recipe={recipe} />
+							) : (
+								<p key={recipe._id}>Recipe data is missing</p>
+							)
+						)
+					) : (
+						<p>No recipes found.</p>
+					)}
+				</StyledMyRecipes>
+			);
+		} else if (activeTab === 'likedRecipes') {
+			return (
+				<StyledMyRecipes>
+					{error ? (
+						<p>Error: {error}</p>
+					) : likedRecipes.length > 0 ? (
+						likedRecipes.map(recipe =>
+							recipe && recipe.name ? (
+								<Card key={recipe._id} recipe={recipe} />
+							) : (
+								<p key={recipe._id}>Recipe data is missing</p>
+							)
+						)
+					) : (
+						<p>No liked recipes found.</p>
+					)}
+				</StyledMyRecipes>
+			);
+		}
+	};
 
 	return (
 		<StyledProfile>
 			<StyledHeader>
-				
 				{userLogged.photoURL ? (
 					<StyledProfileImage src={userLogged.photoURL} alt='Profile' />
 				) : (
@@ -74,7 +146,6 @@ const Profile = () => {
 				)}
 				<StyledColumn>
 					<StyledRow>
-						{/* Asegúrate de que userLogged esté definido antes de renderizar */}
 						<span>{userLogged.displayName || userLogged.email}</span>
 						<StyledButton onClick={() => setIsLightboxOpen(true)}>
 							Edit Profile
@@ -94,30 +165,28 @@ const Profile = () => {
 				</StyledColumn>
 			</StyledHeader>
 
-			<div>
-				<h2>Mis recetas</h2>
-				<StyledMyRecipes>
-					{error ? (
-						<p>Error: {error}</p>
-					) : recipes.length > 0 ? (
-						recipes.map(recipe =>
-							recipe && recipe.name ? (
-								<Card key={recipe._id} recipe={recipe} />
-							) : (
-								<p key={recipe._id}>Recipe data is missing</p>
-							)
-						)
-					) : (
-						<p>No recipes found.</p>
-					)}
-				</StyledMyRecipes>
-			</div>
+			<StyledTabs>
+				<StyledTab
+					$isActive={activeTab === 'myRecipes'}
+					onClick={() => setActiveTab('myRecipes')}
+				>
+					Recetas
+				</StyledTab>
+				<StyledTab
+					$isActive={activeTab === 'likedRecipes'}
+					onClick={() => setActiveTab('likedRecipes')}
+				>
+					Favs
+				</StyledTab>
+			</StyledTabs>
+
+			<StyledRecipesContainer>{renderRecipes()}</StyledRecipesContainer>
 
 			{isLightboxOpen && (
 				<EditProfile
 					user={userLogged}
 					onClose={() => setIsLightboxOpen(false)}
-					onProfileUpdate={setUserLogged} // Pasamos la función para actualizar el usuario
+					onProfileUpdate={setUserLogged}
 				/>
 			)}
 		</StyledProfile>

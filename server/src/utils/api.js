@@ -1,4 +1,3 @@
-// utils/api.js
 import { HEADERS } from '../constants/headers';
 import { METHODS } from '../constants/methods';
 import { fetchData } from './fetchData';

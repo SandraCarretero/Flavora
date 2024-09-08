@@ -8,7 +8,7 @@ export const getData = async url => {
 		return data;
 	} catch (error) {
 		console.error('Error in getData:', error);
-		throw error; // Re-lanza el error para que el componente pueda manejarlo
+		throw error;
 	}
 };
 

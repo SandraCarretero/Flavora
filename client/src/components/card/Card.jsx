@@ -14,18 +14,46 @@ import {
 	StyledImageContainer,
 	StyledHeartIcon
 } from './card.styles';
-import { useState } from 'react';
+import { postData } from '../../utils/api';
+import { AuthContext } from '../../context/Auth.context';
+import { useContext, useEffect, useState } from 'react';
 
 const Card = ({ recipe }) => {
+	const { userLogged } = useContext(AuthContext);
 	const [isLiked, setIsLiked] = useState(false);
 
-	if (!recipe) {
-		return <p>No recipe data available</p>;
-	}
+	useEffect(() => {
+		if (userLogged && Array.isArray(recipe.likedBy)) {
+			setIsLiked(recipe.likedBy.includes(userLogged.uid));
+		}
+	}, [recipe.likedBy, userLogged]);
 
-	const toggleLike = event => {
+	const toggleLike = async event => {
 		event.stopPropagation();
-		setIsLiked(!isLiked); // Alternar entre true y false
+
+		if (!userLogged) {
+			console.error('User is not logged in');
+			return;
+		}
+
+		setIsLiked(prevState => !prevState);
+
+		try {
+			if (isLiked) {
+				await postData('http://localhost:3000/api/recipes/unlike', {
+					recipeId: recipe._id,
+					userId: userLogged.uid
+				});
+			} else {
+				await postData('http://localhost:3000/api/recipes/like', {
+					recipeId: recipe._id,
+					userId: userLogged.uid
+				});
+			}
+		} catch (error) {
+			setIsLiked(prevState => !prevState);
+			console.error('Error al cambiar el like:', error);
+		}
 	};
 
 	const formatTime = time => {
@@ -50,11 +78,11 @@ const Card = ({ recipe }) => {
 						<StyledCategory>{recipe.name || 'No name'}</StyledCategory>
 						<StyledFilter>
 							{recipe.course || 'No course'} |{' '}
-							{recipe.mealType || 'No specialties'}
+							{recipe.mealType || 'No meal type'}
 						</StyledFilter>
 					</StyledText>
 					<StyledContainerSpecials>
-						{recipe.specialties.map((specialty, index) => (
+						{recipe.specialties?.map((specialty, index) => (
 							<StyledSpecials key={index}>{specialty}</StyledSpecials>
 						))}
 					</StyledContainerSpecials>

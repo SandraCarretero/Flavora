@@ -1,4 +1,3 @@
-// src/providers/authService.js
 import { auth, db } from '../config/firebase.config';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import {
@@ -12,7 +11,6 @@ import {
 
 export async function registerUser(email, password, username) {
 	try {
-		// Verificar si el nombre de usuario ya está en uso
 		const usernameQuery = query(
 			collection(db, 'users'),
 			where('username', '==', username)
@@ -23,7 +21,6 @@ export async function registerUser(email, password, username) {
 			throw new Error('El nombre de usuario ya está en uso.');
 		}
 
-		// Crear el usuario con correo y contraseña
 		const userCredential = await createUserWithEmailAndPassword(
 			auth,
 			email,
@@ -31,7 +28,6 @@ export async function registerUser(email, password, username) {
 		);
 		const uid = userCredential.user.uid;
 
-		// Guardar el nombre de usuario en Firestore
 		await setDoc(doc(db, 'users', uid), {
 			username,
 			email

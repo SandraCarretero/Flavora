@@ -59,9 +59,42 @@ const StyledLogout = styled.img`
 
 const StyledMyRecipes = styled.div`
 	display: flex;
-	row-gap: 30px;
+	gap: 70px;
 	flex-wrap: wrap-reverse;
 	flex-direction: row-reverse;
+	width: 80%;
+	margin: 0 auto;
+	justify-content: center;
+`;
+
+const StyledTabs = styled.div`
+	display: flex;
+	justify-content: center;
+	margin-top: 20px;
+`;
+
+const StyledTab = styled.button`
+	background: none;
+	border: none;
+	border-bottom: 2px solid
+		${({ $isActive }) => ($isActive ? '#39db4a' : 'transparent')};
+	color: ${({ $isActive }) => ($isActive ? '#39db4a' : '#717171')};
+	font-size: 1rem;
+	padding: 10px;
+	cursor: pointer;
+	transition: all 0.3s ease;
+
+	&:hover {
+		color: #39db4a;
+	}
+
+	&:focus {
+		outline: none;
+	}
+`;
+
+const StyledRecipesContainer = styled.div`
+	padding-top: 3.75rem;
 `;
 
 export {
@@ -73,5 +106,8 @@ export {
 	StyledColorImg,
 	StyledColumn,
 	StyledRow,
-	StyledMyRecipes
+	StyledMyRecipes,
+	StyledTabs,
+	StyledTab,
+	StyledRecipesContainer
 };

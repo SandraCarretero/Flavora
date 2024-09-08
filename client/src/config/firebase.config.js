@@ -2,7 +2,6 @@ import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getStorage } from 'firebase/storage';
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
 	apiKey: 'AIzaSyDnQ2f4eAgADDdU_kHo05BwlG-BjrL4lsQ',
 	authDomain: 'users-firebase-91df5.firebaseapp.com',
@@ -12,7 +11,6 @@ const firebaseConfig = {
 	appId: '1:149985925827:web:ede8452794a6371355e076'
 };
 
-// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
 const auth = getAuth(app);

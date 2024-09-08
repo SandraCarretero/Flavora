@@ -19,7 +19,6 @@ const Steps = ({ step, onAdd, onDelete, showAddButton, onChange }) => {
 	);
 };
 
-// Función para manejar cambios en el textarea
 const handleTextareaChange = (e, id, onChange) => {
 	onChange(id, e.target.value);
 };

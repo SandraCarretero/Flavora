@@ -19,7 +19,7 @@ const Specials = () => {
 		const fetchRecipes = async () => {
 			try {
 				const response = await getData('http://localhost:3000/api/recipes');
-				console.log('API Response:', response); // Registra la respuesta de la API
+				console.log('API Response:', response); 
 
 				if (response.error) {
 					setError(response.error);
@@ -27,7 +27,7 @@ const Specials = () => {
 				} else {
 					if (Array.isArray(response)) {
 						setRecipes(response);
-						setFilteredRecipes(response); // Inicialmente, muestra todas las recetas
+						setFilteredRecipes(response); 
 					} else {
 						setError('Unexpected response format');
 						console.error('Unexpected response format:', response);
@@ -43,8 +43,8 @@ const Specials = () => {
 	}, []);
 
 	useEffect(() => {
-		console.log('Selected Special:', selectedSpecials); // Registra la especialidad seleccionada
-		console.log('All Recipes:', recipes); // Registra todas las recetas
+		console.log('Selected Special:', selectedSpecials); 
+		console.log('All Recipes:', recipes); 
 
 		if (selectedSpecials) {
 			const filtered = recipes.filter(
@@ -55,10 +55,10 @@ const Specials = () => {
 							specialty.toLowerCase() === selectedSpecials.toLowerCase()
 					)
 			);
-			console.log('Filtered Recipes:', filtered); // Registra las recetas filtradas
+			console.log('Filtered Recipes:', filtered); 
 			setFilteredRecipes(filtered);
 		} else {
-			setFilteredRecipes(recipes); // Si no hay filtro, muestra todas las recetas
+			setFilteredRecipes(recipes); 
 		}
 	}, [selectedSpecials, recipes]);
 

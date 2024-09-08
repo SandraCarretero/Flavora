@@ -89,12 +89,10 @@ const registerUser = async (email, password, username) => {
 		);
 		const user = userCredential.user;
 
-		// Actualizar el perfil del usuario con el username
 		await updateProfile(user, {
 			displayName: username
 		});
 
-		// Aquí puedes agregar cualquier otra lógica que necesites después del registro
 	} catch (error) {
 		console.error('Error during registration:', error);
 		throw new Error(error.message);

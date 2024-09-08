@@ -21,7 +21,7 @@ import {
 	StyledSelect,
 	StyledStepsContainer,
 	StyledTimeInputs
-} from '../addRecipe/addRecipe.styles'; // Asegúrate de tener estos estilos
+} from '../addRecipe/addRecipe.styles';
 import Ingredients from '../../components/ingredients/Ingredients';
 import Steps from '../../components/steps/Steps';
 
@@ -234,6 +234,7 @@ const EditRecipe = () => {
 								<option value=''>Tipo de comida</option>
 								<option value='Carne'>Carne</option>
 								<option value='Pollo'>Pollo</option>
+								<option value='Ensalada'>Ensalada</option>
 								<option value='Pescado'>Pescado</option>
 								<option value='Puré'>Puré</option>
 								<option value='Patatas'>Patatas</option>

@@ -18,6 +18,7 @@ const StyledLightboxBackground = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	z-index: 2;
 `;
 
 const StyledLightboxContainer = styled.div`

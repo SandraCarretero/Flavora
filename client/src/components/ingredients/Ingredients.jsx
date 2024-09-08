@@ -53,7 +53,6 @@ const Ingredients = ({
 	);
 };
 
-// Función para manejar cambios en los inputs
 const handleInputChange = (e, id, onChange) => {
 	const { name, value } = e.target;
 	onChange(id, name, value);
