@@ -27,10 +27,10 @@ const Nav = () => {
 						<Link to='/meals'>Comidas</Link>
 					</li>
 					<li>
-						<Link to='/'>Categorías</Link>
+						<Link to='/course'>Platos</Link>
 					</li>
 					<li>
-						<Link to='/'>Especiales</Link>
+						<Link to='/specials'>Especiales</Link>
 					</li>
 				</StyledList>
 			</nav>

@@ -2,6 +2,29 @@ import styled from 'styled-components';
 
 const StyledContainerCard = styled.div`
 	width: 25%;
+	position: relative;
+
+	&::before {
+		content: '';
+		background-color: #39db4a;
+		width: 2.5rem;
+		height: 2.5rem;
+		position: absolute;
+		top: 0;
+		right: 0;
+		border-radius: 0 0 0 0.625rem;
+		z-index: 1;
+	}
+`;
+
+const StyledHeartIcon = styled.img`
+	width: 1.5rem;
+	height: 1.5rem;
+	position: absolute;
+	top: 0.5rem;
+	right: 0.5rem;
+	cursor: pointer;
+	z-index: 2;
 `;
 
 const StyledCard = styled.div`
@@ -18,27 +41,14 @@ const StyledCard = styled.div`
 	box-shadow: 0px 0px 8px 0px #e2e2e2;
 	border-radius: 1.25rem;
 	padding-bottom: 0.75rem;
+`;
 
-	&::before {
-		content: '';
-		background-color: #39db4a;
-		width: 2.5rem;
-		height: 2.5rem;
-		position: absolute;
-		top: 0;
-		right: 0;
-		border-radius: 0 0 0 0.625rem;
-	}
-
-	&::after {
-		content: url(/images/noLike.svg);
-		width: 1.25rem;
-		position: absolute;
-		height: 1.25rem;
-		top: 0.625rem;
-		right: 0.625rem;
-		cursor: pointer;
-	}
+const StyledImageContainer = styled.div`
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	height: 135px;
+	overflow: hidden;
 `;
 
 const StyledImage = styled.img`
@@ -102,6 +112,7 @@ const StyledDetailsImg = styled.img`
 export {
 	StyledContainerCard,
 	StyledCard,
+	StyledImageContainer,
 	StyledImage,
 	StyledText,
 	StyledCategory,
@@ -110,5 +121,6 @@ export {
 	StyledSpecials,
 	StyledComponentDetails,
 	StyledDetails,
-	StyledDetailsImg
+	StyledDetailsImg,
+	StyledHeartIcon
 };

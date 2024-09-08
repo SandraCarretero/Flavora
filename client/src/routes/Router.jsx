@@ -8,6 +8,8 @@ import AddRecipe from '../pages/addRecipe/AddRecipe';
 import RecipeDetail from '../pages/recipeDetail/RecipeDetail';
 import EditRecipe from '../pages/editRecipe/EditRecipe';
 import Meals from '../pages/meals/Meals';
+import Course from '../pages/course/Course';
+import Specials from '../pages/specials/Specials';
 
 const Router = () => {
 	return (
@@ -19,8 +21,10 @@ const Router = () => {
 				<Route path='/profile' element={<Profile />} />
 				<Route path='/addRecipe' element={<AddRecipe />} />
 				<Route path='/recipe/:id' element={<RecipeDetail />} />
-				<Route path="/editRecipe/:id" element={<EditRecipe />} />
-				<Route path="/meals" element={<Meals />} />
+				<Route path='/editRecipe/:id' element={<EditRecipe />} />
+				<Route path='/meals' element={<Meals />} />
+				<Route path='/course' element={<Course />} />
+				<Route path='/specials' element={<Specials />} />
 			</Route>
 		</Routes>
 	);

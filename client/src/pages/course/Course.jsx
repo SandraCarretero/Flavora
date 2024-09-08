@@ -7,12 +7,12 @@ import {
 	StyledFilterContainer,
 	StyledMealsContainer,
 	StylesMeals
-} from './meals.styles';
+} from './course.styles';
 
-const Meals = () => {
+const Course = () => {
 	const [recipes, setRecipes] = useState([]);
 	const [filteredRecipes, setFilteredRecipes] = useState([]);
-	const [selectedMeal, setSelectedMeal] = useState('');
+	const [selectedCourse, setSelectedCourse] = useState('');
 	const [error, setError] = useState(null);
 
 	useEffect(() => {
@@ -43,40 +43,36 @@ const Meals = () => {
 	}, []);
 
 	useEffect(() => {
-		console.log('Selected Course:', selectedMeal); // Registra el curso seleccionado
+		console.log('Selected Course:', selectedCourse); // Registra el curso seleccionado
 		console.log('All Recipes:', recipes); // Registra todas las recetas
-		if (selectedMeal) {
+		if (selectedCourse) {
 			const filtered = recipes.filter(
 				recipe =>
-					recipe.mealType &&
-					recipe.mealType.toLowerCase() === selectedMeal.toLowerCase()
+					recipe.course &&
+					recipe.course.toLowerCase() === selectedCourse.toLowerCase()
 			);
 			console.log('Filtered Recipes:', filtered); // Registra las recetas filtradas
 			setFilteredRecipes(filtered);
 		} else {
 			setFilteredRecipes(recipes);
 		}
-	}, [selectedMeal, recipes]);
+	}, [selectedCourse, recipes]);
 
-	const handleMealChange = event => {
-		setSelectedMeal(event.target.value);
+	const handleCourseChange = event => {
+		setSelectedCourse(event.target.value);
 	};
 
 	return (
 		<StylesMeals>
 			<StyledFilterContainer>
-				<StyledFilter value={selectedMeal} onChange={handleMealChange}>
+				<StyledFilter value={selectedCourse} onChange={handleCourseChange}>
 					<option value=''>Todos</option>
-					<option value='Carne'>Carne</option>
-					<option value='Pollo'>Pollo</option>
-					<option value='Pescado'>Pescado</option>
-					<option value='Puré'>Puré</option>
-					<option value='Patatas'>Patatas</option>
-					<option value='Verdura'>Verdura</option>
-					<option value='Pasta'>Pasta</option>
-					<option value='Arroz'>Arroz</option>
+					<option value='Desayuno'>Desayuno</option>
+					<option value='Entrante'>Entrante</option>
+					<option value='Acompañamiento'>Acompañamiento</option>
+					<option value='Primer plato'>Primer plato</option>
 					<option value='Postre'>Postre</option>
-					<option value='Batido'>Batido</option>
+					<option value='Tentempié'>Tentempié</option>
 				</StyledFilter>
 			</StyledFilterContainer>
 			<StyledMealsContainer>
@@ -94,4 +90,4 @@ const Meals = () => {
 	);
 };
 
-export default Meals;
+export default Course;

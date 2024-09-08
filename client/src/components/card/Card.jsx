@@ -10,13 +10,23 @@ import {
 	StyledContainerSpecials,
 	StyledSpecials,
 	StyledImage,
-	StyledContainerCard
+	StyledContainerCard,
+	StyledImageContainer,
+	StyledHeartIcon
 } from './card.styles';
+import { useState } from 'react';
 
 const Card = ({ recipe }) => {
+	const [isLiked, setIsLiked] = useState(false);
+
 	if (!recipe) {
 		return <p>No recipe data available</p>;
 	}
+
+	const toggleLike = event => {
+		event.stopPropagation();
+		setIsLiked(!isLiked); // Alternar entre true y false
+	};
 
 	const formatTime = time => {
 		if (!time) return 'No time';
@@ -26,9 +36,16 @@ const Card = ({ recipe }) => {
 
 	return (
 		<StyledContainerCard>
+			<StyledHeartIcon
+				src={isLiked ? '/images/like.svg' : '/images/noLike.svg'}
+				alt={isLiked ? 'liked' : 'not liked'}
+				onClick={toggleLike}
+			/>
 			<Link to={`/recipe/${recipe._id}`}>
 				<StyledCard>
-					<StyledImage src={recipe.image} alt={recipe.name} />
+					<StyledImageContainer>
+						<StyledImage src={recipe.image} alt={recipe.name} />
+					</StyledImageContainer>
 					<StyledText>
 						<StyledCategory>{recipe.name || 'No name'}</StyledCategory>
 						<StyledFilter>

@@ -102,13 +102,13 @@ const StyledList = styled.ol`
 `;
 
 const StyledMenuIcon = styled.div`
-	top: 10px;
-	right: 10px;
+	top: 0.625rem;
+	right: 0.625rem;
 	cursor: pointer;
 
 	img {
-		width: 24px;
-		height: 24px;
+		width: 2.5rem;
+		aspect-ratio: 1;
 	}
 `;
 
@@ -134,9 +134,9 @@ const StyledMenuOptionBtn = styled.button`
 	text-align: left;
 
 	img {
-		width: 20px;
-		height: 20px;
-		margin-right: 10px;
+		width: 1.25rem;
+		height: 1.25rem;
+		margin-right: 0.625rem;
 	}
 
 	&:hover {
